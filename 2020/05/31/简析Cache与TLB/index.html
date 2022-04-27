@@ -4,15 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>Archives | Hexo</title>
+  <title>简析Cache与TLB | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="简述Cache与TLBCPU Cache 与 TLB 都是存在于微处理器中的硬件设备，但它们二者有什么不同呢？难道说 TLB 也是 Cache 的一种？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简析Cache与TLB">
+<meta property="og:url" content="http://example.com/2020/05/31/%E7%AE%80%E6%9E%90Cache%E4%B8%8ETLB/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="简述Cache与TLBCPU Cache 与 TLB 都是存在于微处理器中的硬件设备，但它们二者有什么不同呢？难道说 TLB 也是 Cache 的一种？">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/05/31/IEiOyzVSgkeRrU2.png">
+<meta property="article:published_time" content="2020-05-31T04:13:52.000Z">
+<meta property="article:modified_time" content="2020-05-31T15:47:14.286Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/31/IEiOyzVSgkeRrU2.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -69,226 +75,77 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/10/13/test-file/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-10-13T12:42:29.000Z" itemprop="datePublished">Oct 13</time>
+        <section id="main"><article id="post-简析Cache与TLB" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/05/31/%E7%AE%80%E6%9E%90Cache%E4%B8%8ETLB/" class="article-date">
+  <time class="dt-published" datetime="2020-05-31T04:13:52.000Z" itemprop="datePublished">2020-05-31</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/13/test-file/">test file</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      简析Cache与TLB
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="简述Cache与TLB"><a href="#简述Cache与TLB" class="headerlink" title="简述Cache与TLB"></a>简述Cache与TLB</h1><p>CPU Cache 与 TLB 都是存在于微处理器中的硬件设备，但它们二者有什么不同呢？难道说 TLB 也是 Cache 的一种？</p>
+<span id="more"></span>
+
+<p>首先，Cache是一种更加快速的内存，它存在的目的就是减少从主存(RAM)取数据到 CPU 寄存器的这部分延迟。所以，Cache 被放置在主存和 CPU 之间， 其中存放着一些临时数据，使得对相同信息的再次访问变得更加快速。</p>
+<p>Cache 又分为指令 Cache 和数据 Cache，二者分别用于存放 <strong>可执行指令</strong> 和 <strong>数据</strong>，它们分别加快了操作系统取指令和取数据的速度。现在的处理器都包含这两种 Cache。为了完整起见，我们来讨论一下数据 Cache 的等级：Level 1 Cache、Level 2 Cache 等等 ······ 需要注意的是，与 L2 Cache 相比，L1 Cache 总是更快更小，但也更昂贵。</p>
+<p>只有当处理器用到虚拟内存时，TLB 才有它的用武之地。简而言之，TLB 通过将 <strong>页表</strong> 存储起来，来加快 <strong>虚拟地址</strong> 向 <strong>物理地址</strong> 的转换。准确地说，是内存管理单元(MMU)使用 TLB 来完成将虚拟地址转换成物理地址的任务。将虚拟地址和物理地址的映射关系保存在 TLB 中，提高了访问页表的效率。</p>
+<p>需要注意的是，页表（其本身存储在主存中）记录了虚拟页在物理内存中的位置，从这个角度来说，TLB 也可以视为页表的 Cache 缓存。</p>
+<p>但是 TLB 和 Cache 的所应用的场景是不同的。TLB 是为了加快虚拟地址的转换速率，从而使得每次的地址转换都不再必须访问页表；Cache 是为了加快访问主存中数据的速率，从而使得 CPU 每次取数据时都不再必须访问主存。对 TLB 的操作在 MMU 进行地址转换时发生，而对 Cache 的操作在 CPU 访问主存时发生。</p>
+<p><img src="https://i.loli.net/2020/05/31/IEiOyzVSgkeRrU2.png" alt="image"></p>
+<p>事实上，任何现代的处理器都有指令 Cache、L1 和 L2 数据 Cache 以及 TLB。</p>
+<h2 id="二者关联"><a href="#二者关联" class="headerlink" title="二者关联"></a>二者关联</h2><p>TLB 缓存了常用的页表项，减少了虚拟地址到物理地址转换的耗时；CPU cache 缓存了常用的内存数据，减少了访问内存的耗时。<br>当 CPU 要访问内存时，使用的是虚拟地址。具体过程是，先查找页表找到虚拟地址对应的物理地址，然后通过物理地址从主存中取出数据，如果 MMU 在 TLB 中找到了虚拟地址所对应的物理地址，就可以直接从物理地址所对应的主存中取出数据，而不需要再访问页表（页表在主存中，访问页表很费时）。在取出主存中的数据时，可能会用到 CPU Cache，如果 Cache 中缓存了对应地址中的数据，那就不用再访问主存了，直接从 Cache 中取出数据即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/05/31/%E7%AE%80%E6%9E%90Cache%E4%B8%8ETLB/" data-id="cl2hg7sum003edwbl0h7b83n2" data-title="简析Cache与TLB" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/31/%E7%BB%86%E8%AF%B4%E5%A0%86%E4%B8%8E%E6%A0%88/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          细说堆与栈
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/20/C%E8%AF%AD%E8%A8%80%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C语言随机数生成</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-07-08T17:59:13.000Z" itemprop="datePublished">Jul 9</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/">Turtle 画图示例</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/05/07/Weight-deacy/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-05-07T12:24:52.000Z" itemprop="datePublished">May 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/05/07/Weight-deacy/">Weight deacy</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-04-15T08:04:10.000Z" itemprop="datePublished">Apr 15</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">样本方差公式推导</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T03:07:26.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pandas小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T02:31:28.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pytorch小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/08/Machine-Learning-Notes-III/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-08T08:44:19.000Z" itemprop="datePublished">Nov 8</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/08/Machine-Learning-Notes-III/">Machine Learning Notes(III)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-07T07:23:29.000Z" itemprop="datePublished">Nov 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/">模运算与快速幂算法</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/05/Machine-Learning-Notes-II/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-05T10:00:15.000Z" itemprop="datePublished">Nov 5</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/05/Machine-Learning-Notes-II/">Machine Learning Notes(II)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-10-29T08:25:32.000Z" itemprop="datePublished">Oct 29</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">Pytorch实现鸢尾花分类问题</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         

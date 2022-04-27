@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>基于区块链的身份认证系统Demo | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本文是一篇在 Windows 环境下，关于如何使用 基于区块链的身份认证系统Demo 的教程。注：这真的只是个 Demo！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于区块链的身份认证系统Demo">
+<meta property="og:url" content="http://example.com/2020/06/06/%E5%9F%BA%E4%BA%8E%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E7%B3%BB%E7%BB%9FDemo/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文是一篇在 Windows 环境下，关于如何使用 基于区块链的身份认证系统Demo 的教程。注：这真的只是个 Demo！">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/6wK5Tnoe72v4MxC.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/6jraWomH3K4giFc.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/CHq4dR5SpuKDazB.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/McG36pbLuTHsUZn.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/yP89MmaUwdnNFWH.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/vcBTwStrqDMsNG9.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/lo8TnQRHXvLEgSY.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/zgVSDXykB1REh9x.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/O6ux7gPjX1eibH3.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/TiRU39o7CGQYBLj.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/FpKSiNsmfRyk1vV.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/gGMOK6paEUJdbh2.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/6UED2LNKasCSBjT.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/06/lALGN2vMXrs47iP.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/JSBoHpGaeM94clv.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/AFwUhBqi8O96kWb.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/zJ5apYuHgBZiTFn.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/TNrAxeJOvgRmU9C.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/IY4FHiwpfW1Qg9O.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/Uo7BusXlLKhMf9x.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/JBGbxLVTsfncihy.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/opXhRmUzEy9itKM.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/Uo7BusXlLKhMf9x.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/LFwCaNP9XRgcDKs.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/GUtwVkQZxmdF1Es.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/07/NzXtweSJq7mbcE4.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/08/3Ayc16HVvMsNUEr.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/08/w7NOjCod4YeFklJ.png">
+<meta property="article:published_time" content="2020-06-06T07:03:40.000Z">
+<meta property="article:modified_time" content="2020-06-08T03:58:27.283Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/06/06/6wK5Tnoe72v4MxC.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-基于区块链的身份认证系统Demo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/06/06/%E5%9F%BA%E4%BA%8E%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E7%B3%BB%E7%BB%9FDemo/" class="article-date">
+  <time class="dt-published" datetime="2020-06-06T07:03:40.000Z" itemprop="datePublished">2020-06-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      基于区块链的身份认证系统Demo
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文是一篇在 Windows 环境下，关于如何使用 <strong>基于区块链的身份认证系统Demo</strong> 的教程。<br><strong>注：这真的只是个 Demo！</strong></p>
+<span id="more"></span>
+
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ol>
+<li>OS： Windows 10 教育版（64 位）</li>
+<li>Ganache 版本： v 2.1.2.0</li>
+<li>Nodejs 版本：v 10.15.1</li>
+<li>Truffle 版本：v 5.1.10</li>
+<li>编程语言：Solidity</li>
+<li>Solidity 编译器版本：v 0.5.10</li>
+<li>MetaMask 版本：v 7.7.9</li>
+<li>浏览器：Google Chrome v 83.0.4103.61（64 位） </li>
+<li>代码编辑器：Visual Studio Code</li>
+<li>MarkDown 编辑器：Typora</li>
+</ol>
+<hr>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>假设你已经完全搭建好了上述的 <strong>开发环境</strong>，现在就可以直接使用此 Demo 了。（不仅是搭建环境，还有在使用Ganache 等其他工具的时候，都有许多 <strong>坑</strong>，请继续阅读后面的 <strong>踩坑环节</strong>）</p>
+<p>接下来，让我们 <del>假设自己</del> 万事俱备，就差让系统跑起来了！</p>
+<h3 id="步骤一：使用-Ganache-客户端搭建本地私有链"><a href="#步骤一：使用-Ganache-客户端搭建本地私有链" class="headerlink" title="步骤一：使用 Ganache 客户端搭建本地私有链"></a>步骤一：使用 Ganache 客户端搭建本地私有链</h3><p>这一步非常简单，直接启动 Ganache 客户端，然后点击 <strong>QUICKSTART</strong> 就可以了。它会帮我们在本地创建一个区块链，然后还提供了 10 个账户（公钥和私钥），每个账户初始都有 100 个 ETH，供我们实验使用。</p>
+<h4 id="图文流程如下"><a href="#图文流程如下" class="headerlink" title="图文流程如下"></a>图文流程如下</h4><p>下方图片展示的是一个刚刚启动完毕的 Ganache 客户端界面截图。</p>
+<p><img src="https://i.loli.net/2020/06/06/6wK5Tnoe72v4MxC.png" alt="Ganache客户端启动界面"><br><br></p>
+<p>点击界面上的 <strong>QUICKSTART</strong> 按钮，就可以看到如下图所示的界面了。（图中的红色框框和红色序号是我自己画上去的，待会会有说明）</p>
+<p><img src="https://i.loli.net/2020/06/06/6jraWomH3K4giFc.png" alt="点击 QUICKSTASRT"><br><br></p>
+<p>图中用红色序号 <strong>①</strong> 标注出来的方框里，看到那 12 个 <strong>未加粗</strong> 的英文单词了嘛，它们是一个整体，叫做 <strong>Wallet Seed</strong>，待会我们把这 10 个账号一次性导入到 Meta Mask 时，就会用到它们了。<br></p>
+<p>上图中每个 <strong>ADDRESS</strong> 下都有一长串的十六 进制数，这个就是账户的 <strong>公钥</strong>。看到用红色序号 <strong>②</strong> 标记的位置了嘛，那里有个小🔑，点击它就会显示出这个账号的公钥（账号地址）和私钥，你可以点一下试试看，我这里就不放图了。<br></p>
+<p>为了验证一下搭建私有链是否成功，我们可以点击一下选项栏里的 <strong>BLOCKS</strong> 选项，看一下效果吧，如下图所示。</p>
+<img src="https://i.loli.net/2020/06/06/CHq4dR5SpuKDazB.png" alt="区块信息展示"  />
+<br>
+
+<p>图中用红色方框标记出来的区域，就是我们刚刚 <strong>“挖”</strong> 出来的区块，看到红色区域中 BLOCK 下方的数字 0 了吧，这就是 <strong>创世区块</strong>，说明咱们的私有链已经搭建成功了。点击红色区域的任何一部分，将为我们展示此区块中的具体信息：区块头、区块体等，大家可以自行探索。</p>
+<h3 id="步骤二：部署智能合约到区块链上"><a href="#步骤二：部署智能合约到区块链上" class="headerlink" title="步骤二：部署智能合约到区块链上"></a>步骤二：部署智能合约到区块链上</h3><p>这一部分也很简单，主要用到的命令有：切换当前所在目录命令 <code>cd</code>；编译智能合约命令 <code>truffle compile</code>；部署智能合约命令 <code>truffle migrate</code>；运行系统命令<code>npm run start</code>。几个简单的命令介绍完毕，我们来看具体操作。</p>
+<h4 id="图文流程如下-1"><a href="#图文流程如下-1" class="headerlink" title="图文流程如下"></a>图文流程如下</h4><p>先给大家看一下我们的文件目录，我们待会部署合约的时候需要再次 <strong>改写</strong> App.js 这个文件。是不是看到图片中 <code>contracts</code> 目录下的 <strong>Authorization.sol</strong> 文件报错啦？这是由于我 VS Code 里的 Solidity Extension 版本与我使用的 Solidity 编译器版本不一致，没关系的，我们待会是在 Truffle 框架下进行编译的，这个报错提示并不会产生任何影响。（还有其他疑问，都会在 <strong>踩坑环节</strong> 逐一解答）<br><img src="https://i.loli.net/2020/06/06/McG36pbLuTHsUZn.png" alt="文件目录"><br><br></p>
+<p>先把当前目录切换到 <code>client</code> 目录下。<br><img src="https://i.loli.net/2020/06/06/yP89MmaUwdnNFWH.png" alt="切换当前目录"><br><br></p>
+<p>执行 <code>truffle compile</code> 命令，对智能合约进行编译。编译完成，报了一个 <strong>Warning</strong> ，说我们使用了一个还正在试验中的特性，最好不要在生产环境中使用这行代码 <code>pragma experimental ABIEncoderV2</code>。无伤大雅，我们只管用！编译完成后，你还会发现文件目录中多了一个文件夹 <code>build</code>。<br><img src="https://i.loli.net/2020/06/06/vcBTwStrqDMsNG9.png" alt="编译智能合约"><br><br></p>
+<p>执行 <code>truffle migrate</code> 命令，将智能合约部署到区块链上。由于输出信息较多，我们只截取其中比较重要的部分进行展示。当你成功执行完这条命令后，你可以再回到 Ganache 客户端的 <strong>BLOCKS</strong> 选项里看一下，会多出四个区块来，你可以研究一下每个区块中的内容，以及为什么是四个区块😉。</p>
+<p><img src="https://i.loli.net/2020/06/06/lo8TnQRHXvLEgSY.png" alt="truffle migrate"><br><img src="https://i.loli.net/2020/06/06/zgVSDXykB1REh9x.png" alt="合约地址"><br><br></p>
+<p>看到上面第二幅图中红色框框的部分了嘛，我们需要复制 <strong>contract address</strong> 后的那一长串十六进制数，将其粘贴到 <strong>App.js</strong> 文件中的相应位置，如下图所示。</p>
+<p><img src="https://i.loli.net/2020/06/06/O6ux7gPjX1eibH3.png" alt="复制合约地址"><br><br></p>
+<p>接下来，我们就可以执行 <code>npm run start</code> 命令来让系统运行起来了。<br><img src="https://i.loli.net/2020/06/06/TiRU39o7CGQYBLj.png" alt="系统运行"><br><br></p>
+<p>此时，你的浏览器应该自动打开系统的前端页面，且弹出下面这样的窗口，我们点击 <strong>使用账号种子密语导入</strong>。还记得之前说过的 <strong>Wallet Seed</strong> 嘛，把他粘贴到弹出的窗口中，设置好新的密码。</p>
+<p><img src="https://i.loli.net/2020/06/06/FpKSiNsmfRyk1vV.png" alt="Meta Mask导入账号"><br><br></p>
+<p>这时会弹出一个 MetaMask 连接到当前账户的窗口，如下图所示。（从这个 React 图标来看，你已经知道前端开发使用的是什么框架了吧，<strong>这是个坑</strong>，待会说）</p>
+<p><img src="https://i.loli.net/2020/06/06/gGMOK6paEUJdbh2.png" alt="MetaMask 连接到账户"><br><br></p>
+<p>点击 <strong>连接</strong> 后，我们就可以在浏览器的 MetaMask 扩展那里，点击右上角的账户头像，查看已经批量导入的账号了，请见下图。从图中可以看到，我们目前正在使用 Account 1 哦。</p>
+<p><img src="https://i.loli.net/2020/06/07/6UED2LNKasCSBjT.png" alt="MetaMask 批量导入账户"><br><br>好的，到了最尴尬的时刻了。我的前端技术水平纯属🌶🐔，详情见下图。</p>
+<p>这就是用户界面图，非常简陋，只有几个 <code>lable</code>、<code>button</code> 组件。显然，几个按钮代表了此 Demo 具备的基本功能。此外，我的信息展示部分，是在开发者控制台中通过 <code>console.log()</code> 进行展示的。<br><img src="https://i.loli.net/2020/06/06/lALGN2vMXrs47iP.png" alt="前端界面"><br><br>按 <strong>F12</strong> 键，点击开发者控制台导航栏里的 <code>Console</code>，再点击上图所示的 <code>Check</code> 按钮，查看当前区块链上的信息，见下图。之后查询链上信息的操作都是如此，在开发者控制台中进行查看。（现在终于体会到这真的只是个 Demo 了吧）</p>
+<p><img src="https://i.loli.net/2020/06/07/JSBoHpGaeM94clv.png" alt="Check 区块链信息"><br><br></p>
+<p>下面开始使用系统的几个功能。</p>
+<ol>
+<li>点击 <code>Register</code> 进行注册：用户名 AA，密码 11。<br> <img src="https://i.loli.net/2020/06/07/AFwUhBqi8O96kWb.png" alt="注册"> <br></li>
+<li>由于注册操作，我们需要向区块中写入信息，这一步是需要花费 gas 的，支付一定的费用。可以从下面三张截图中看到详细情况。<br> <img src="https://i.loli.net/2020/06/07/zJ5apYuHgBZiTFn.png" alt="合约支付.png"> <br></li>
+<li>在上图中点击确认后，右下角就会出现 <strong>Confirmed Transaction</strong>  的弹窗，告诉我们交易已经完成，信息已写入区块。<br> <img src="https://i.loli.net/2020/06/07/TNrAxeJOvgRmU9C.png" alt="右下角"> <br></li>
+<li>最后，我们还可以点击已经确认的交易，看看交易的具体信息等。<br> <img src="https://i.loli.net/2020/06/07/IY4FHiwpfW1Qg9O.png" alt="合约交互细节.png"> <br></li>
+<li>注册后点击 <code>Check</code> 按钮查询已注册和已登录用户信息。<br>  <img src="https://i.loli.net/2020/06/07/Uo7BusXlLKhMf9x.png" alt="注销后查询">  <br></li>
+<li>点击 <code>Login</code> 按钮进行登录操作，再点击 <code>Check</code> 按钮查询已登录用户数。<br>  <img src="https://i.loli.net/2020/06/07/JBGbxLVTsfncihy.png" alt="登陆后查询">  <br></li>
+<li>登录后点击 <code>Modify</code> 修改用户名为：AA_Modify；再点击 <code>Check</code> 按钮进行查询<br>  <img src="https://i.loli.net/2020/06/07/opXhRmUzEy9itKM.png" alt="修改">  <br>
+  ![修改后查询](https://i.loli.net/2020/06/07/BIRO7zSNWfH5JTg.png)
+  <br></li>
+<li>最后点击 <code>Logout</code> 按钮进行注销操作，再点击 <code>Check</code> 按钮查询当前链上数据。<br>  <img src="https://i.loli.net/2020/06/07/Uo7BusXlLKhMf9x.png" alt="注销后查询">  <br></li>
+</ol>
+<hr>
+<p>写到这里，这个小 Demo 的使用流程就结束了。可以看到， 我用了大量的图片和文字来描述每个步骤，事实上，只要记住那三个命令，就可以让它跑起来了，很简单吧！</p>
+<hr>
+<h2 id="踩坑环节"><a href="#踩坑环节" class="headerlink" title="踩坑环节"></a>踩坑环节</h2><p>这一部分主要记录了整个 Demo 的开发过程中，我所遇到的那些 <strong>“坑”</strong>。有些 <strong>非代码方面</strong> 的坑，真的是让我挣扎了好几天。坑比较多，想到什么就写什么吧，再简单的都写，尽量多写。</p>
+<h3 id="坑一：truffle-unbox-react"><a href="#坑一：truffle-unbox-react" class="headerlink" title="坑一：truffle unbox react"></a>坑一：truffle unbox react</h3><p>前端页面我偷懒了，直接从 truffle suite 的 boxes 里把一个现成的 react demo 给搬来了，然后在这个 demo 上再改一改，就成了我的用户页面。<br>于是乎，我在 cmd  中执行 <code>truffle unbox react</code> 。这时候，坑就来了。命令行中的信息一直提示 <strong>网络连接错误</strong>。即使你是 <strong>挂代理</strong>、<strong>开 VPN ** 、</strong>连路由器 WiFi** 都不行，此时，我在 github issues 上找到了一种诡异的解决办法——开手机热点，让你的电脑连上自己的手机热点，重新执行命令即可。</p>
+<h3 id="坑二：网络教程的坑（最重要）"><a href="#坑二：网络教程的坑（最重要）" class="headerlink" title="坑二：网络教程的坑（最重要）"></a>坑二：网络教程的坑（最重要）</h3><p>关于 <strong>Solidity</strong> 和 <strong>Web3.js</strong> 的教程，网络上的中文资源看似不少，实则较为陈旧。当你学完一些中文教程，然后信心满满地去写程序时，会发现到处都是报错，这大多是因为 Solidity 和 Web3.js 的版本更新迭代较快，而网上中文资源里的代码多为版本不一的旧式写法。<br>所以，最好的办法还是去啃 Solodity 和 Web3.js 的 <strong>英文技术文档</strong>。</p>
+<h3 id="坑三：MetaMask-连接本地客户端"><a href="#坑三：MetaMask-连接本地客户端" class="headerlink" title="坑三：MetaMask 连接本地客户端"></a>坑三：MetaMask 连接本地客户端</h3><p>这个其实不算坑，只是我前面没有说明如何让 Meta Mask 与 Ganache 连接起来，所以这里需要补充一下。<br>这里，我们点击 <strong>自定义RPC</strong>，然后会弹出一个窗口，要求我们填一些具体的参数。<br><img src="https://i.loli.net/2020/06/07/LFwCaNP9XRgcDKs.png" alt="自定义RPC"><br><br></p>
+<p>具体参数从哪来的呢？从 Ganache 客户端上得来的。请看下面两幅图片。（因为我已经定义过一个相同的 RPC 了，所以第二张图中信息提示我这个 URL 早就存在了）</p>
+<p><img src="https://i.loli.net/2020/06/07/GUtwVkQZxmdF1Es.png" alt="Ganache参数"><br><br><br><img src="https://i.loli.net/2020/06/07/NzXtweSJq7mbcE4.png" alt="填参数"><br><br></p>
+<h3 id="坑四：Meta-Mask-连接账户问题"><a href="#坑四：Meta-Mask-连接账户问题" class="headerlink" title="坑四：Meta Mask 连接账户问题"></a>坑四：Meta Mask 连接账户问题</h3><p>之前我们说，系统一启动，Meta Mask 就默认和我们的 Account 1 连接起来了，合约部署的时候花费的 gas，也都是由 Account 1 提供的。那如果我现在想切换到 Account 2 呢？直接点击账户头像图标，再选择 Account 2，这时，请刷新一下页面，让 Web3 重新获取到当前账户。（否则 Account 2 并不会被成功地连接）</p>
+<h3 id="坑五：重新部署问题"><a href="#坑五：重新部署问题" class="headerlink" title="坑五：重新部署问题"></a>坑五：重新部署问题</h3><p>要知道，智能合约一旦部署完毕后，就不允许再修改了。记得我们之前说过，执行 <code>truffle compile</code> 对智能合约进行编译后，会多出来一个 <strong>build</strong> 文件夹嘛。如果我们现在想要修改智能合约，那就必须得重新 <strong>编译</strong>、<strong>部署</strong>。重新部署的话，要记住先把原来那个 <strong>build</strong> 文件夹给删除哦！然后再执行 <code>truffle compile</code> 和 <code>truffle migrate</code> 命令。<br><br><br>还有个和 <strong>重新部署</strong> 有点关系的问题：我们第一次使用 Ganache 客户端时，点击 <strong>QUICKSTART</strong> 后，可以把这个 WorkSpace 保存一下（点客户端右上角的 SAVE 即可），这样我们之后不管部署多少个合约，都会在这个链上操作，很方便。</p>
+<h3 id="坑六：删除原区块链问题"><a href="#坑六：删除原区块链问题" class="headerlink" title="坑六：删除原区块链问题"></a>坑六：删除原区块链问题</h3><p>上一节我们说到，点击保存按钮后，以后所有的操作都会在这个被保存的链上进行操作；如果不点保存按钮的话，下一次启动 Ganache 客户端时，它又会给你新造一个链。那假如说：我想每次部署新合约时，都在一个新链上部署，是不是只要不点保存，然后每次 QUICKSTART 就行了呢？当然不行！如果你是那么操作的，可能系统仍然正常运行，但其中一定会有 Bug 的（我当前的开发环境的确是这样的），这个需要你自己多次尝试才能发现。<br>正确的操作应该是 <strong>清除之前的所有数据</strong>，具体请看下面两张图。</p>
+<p>首先，右键点击 <strong>更多</strong>，然后是 <strong>应用设置</strong>。<br><img src="https://i.loli.net/2020/06/08/3Ayc16HVvMsNUEr.png" alt="应用设置"><br><br><br>点击应用设置之后，会弹出这个界面，我们点击 <strong>重置</strong> 就好，把之前的数据都清除掉。在这之后，等一会儿，再重新启动 Ganache 客户端，进行之前的 QUICKSTART 操作就好啦！<br><img src="https://i.loli.net/2020/06/08/w7NOjCod4YeFklJ.png" alt="重置"></p>
+<h3 id="坑七：代码问题"><a href="#坑七：代码问题" class="headerlink" title="坑七：代码问题"></a>坑七：代码问题</h3><p>此 Demo 中的智能合约代码是存在 Bug 的，如果按照我上面写的流程进行操作，你是发现不了 Bug 的。所以，<strong>代码仅供参考</strong> 。此外，请大家一定把 <strong>JavaScript</strong> 学好，不然就会像我一样：能够从区块链上读取所有需要展示的数据，但就是没法全部展现到前端页面上来。（如果你看了我的代码，就会理解我为什么这样说了）<br><br><br><br><br><em>暂时就想到这么些坑，后面如果还能想到，我也会继续在博客更新的</em>······</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我本想再写一节 <strong>学习资料推荐</strong> 的，可是转念一想，大家都会使用搜索引擎的，我就不再多此一举了。其实整个 Demo 还是可以完善成系统的，可惜后期因自己在准备研究生复试，也就没再管它了，导致做出了这么一个 <strong>残次品</strong> ，希望大家能够引以为戒，要踏踏实实地做好每一件事。<br>这篇文章的前半部分是在说明如何使用此 Demo，后半部分则是一些和工具使用相关的问题。整篇文章只能算是我自己写 Demo 时的一些记录，水平实在有限，还望各位海涵。<br>（如果有同学需要询问更多细节的话，也可以来我的博客下留言，我也会及时回复的）<br><a target="_blank" rel="noopener" href="https://jiaqiangwu.top/2020/06/06/%E5%9F%BA%E4%BA%8E%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E7%B3%BB%E7%BB%9FDemo/">本文地址</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/06/06/%E5%9F%BA%E4%BA%8E%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E7%B3%BB%E7%BB%9FDemo/" data-id="cl2hg7sty0028dwbl8qw675mo" data-title="基于区块链的身份认证系统Demo" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/03/Read%20and%20To-Read%20List/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Read and To-Read List
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/31/%E7%BB%86%E8%AF%B4%E5%A0%86%E4%B8%8E%E6%A0%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">细说堆与栈</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Matlab/">Matlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%90%9C%E7%B4%A2%E7%AD%96%E7%95%A5/">搜索策略</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%80%83%E7%A0%94%E8%8B%B1%E8%AF%AD/">考研英语</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/408%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%BB%BC%E5%90%88/" rel="tag">408计算机基础综合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag">C语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matlab/" rel="tag">Matlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pandas/" rel="tag">Pandas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pytorch/" rel="tag">Pytorch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rand/" rel="tag">rand</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/srand/" rel="tag">srand</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E6%96%87/" rel="tag">作文</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%9D%E9%99%A9/" rel="tag">保险</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%9D%E9%99%A9%E7%A7%91%E6%99%AE/" rel="tag">保险科普</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE/" rel="tag">图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E6%9C%BA/" rel="tag">处理机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E5%B7%A7/" rel="tag">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/" rel="tag">理论知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97/" rel="tag">矩阵运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E7%BF%BB%E8%AF%91-%E8%80%83%E7%A0%94%E8%8B%B1%E8%AF%AD/" rel="tag">英语翻译, 考研英语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/" rel="tag">辗转相除法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%A9%E8%AE%BA/" rel="tag">辩论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E6%95%B0/" rel="tag">高数</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/408%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%BB%BC%E5%90%88/" style="font-size: 10px;">408计算机基础综合</a> <a href="/tags/Algorithm/" style="font-size: 13.33px;">Algorithm</a> <a href="/tags/C%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">C语言</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Pytorch/" style="font-size: 16.67px;">Pytorch</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/tags/rand/" style="font-size: 10px;">rand</a> <a href="/tags/srand/" style="font-size: 10px;">srand</a> <a href="/tags/%E4%BD%9C%E6%96%87/" style="font-size: 10px;">作文</a> <a href="/tags/%E4%BF%9D%E9%99%A9/" style="font-size: 10px;">保险</a> <a href="/tags/%E4%BF%9D%E9%99%A9%E7%A7%91%E6%99%AE/" style="font-size: 10px;">保险科普</a> <a href="/tags/%E5%9B%BE/" style="font-size: 10px;">图</a> <a href="/tags/%E5%A4%84%E7%90%86%E6%9C%BA/" style="font-size: 10px;">处理机</a> <a href="/tags/%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">技巧</a> <a href="/tags/%E6%90%9C%E7%B4%A2/" style="font-size: 10px;">搜索</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 20px;">操作系统</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">理论知识</a> <a href="/tags/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97/" style="font-size: 10px;">矩阵运算</a> <a href="/tags/%E8%8B%B1%E8%AF%AD%E7%BF%BB%E8%AF%91-%E8%80%83%E7%A0%94%E8%8B%B1%E8%AF%AD/" style="font-size: 13.33px;">英语翻译, 考研英语</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/" style="font-size: 10px;">辗转相除法</a> <a href="/tags/%E8%BE%A9%E8%AE%BA/" style="font-size: 10px;">辩论</a> <a href="/tags/%E9%AB%98%E6%95%B0/" style="font-size: 13.33px;">高数</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/13/test-file/">test file</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/">Turtle 画图示例</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/07/Weight-deacy/">Weight deacy</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">样本方差公式推导</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pandas小知识</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

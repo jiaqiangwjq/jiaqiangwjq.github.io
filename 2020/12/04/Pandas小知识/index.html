@@ -4,15 +4,23 @@
   <meta charset="utf-8">
   
   
-  <title>Archives | Hexo</title>
+  <title>Pandas小知识 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="写代码的一些常见技巧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pandas小知识">
+<meta property="og:url" content="http://example.com/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="写代码的一些常见技巧。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/04/27/RuCndGXjBv78UcA.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/27/A2W7UDinVgrNPkc.png">
+<meta property="article:published_time" content="2020-12-04T03:07:26.000Z">
+<meta property="article:modified_time" content="2021-04-27T04:20:03.469Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Pandas">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/27/RuCndGXjBv78UcA.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -69,226 +77,80 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/10/13/test-file/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-10-13T12:42:29.000Z" itemprop="datePublished">Oct 13</time>
+        <section id="main"><article id="post-Pandas小知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2020-12-04T03:07:26.000Z" itemprop="datePublished">2020-12-04</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/13/test-file/">test file</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      Pandas小知识
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>写代码的一些常见技巧。</p>
+<span id="more"></span>
+
+
+
+<h3 id="修改所有行中的特定内容"><a href="#修改所有行中的特定内容" class="headerlink" title="修改所有行中的特定内容"></a>修改所有行中的特定内容</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">&#x27;./train.csv&#x27;</span>, encoding = <span class="string">&#x27;big5&#x27;</span>)    <span class="comment"># 繁体字编码</span></span><br><span class="line">data = data.iloc[:, <span class="number">3</span>:]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(data.iloc[:<span class="number">11</span>, :<span class="number">11</span>])	<span class="comment"># 打印一下前面几行，看看内容</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/04/27/RuCndGXjBv78UcA.png" alt="原始内容.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data[data == <span class="string">&#x27;NR&#x27;</span>] = <span class="number">0</span>	<span class="comment"># 把所有行中内容为 NR 的都修改成数字 0</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(data.iloc[:<span class="number">11</span>, :<span class="number">11</span>])</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/04/27/A2W7UDinVgrNPkc.png" alt="修改行中内容.png"></p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-id="cl2hg7stb000udwblcwhj9bai" data-title="Pandas小知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pandas/" rel="tag">Pandas</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          样本方差公式推导
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Pytorch小知识</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-07-08T17:59:13.000Z" itemprop="datePublished">Jul 9</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/">Turtle 画图示例</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/05/07/Weight-deacy/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-05-07T12:24:52.000Z" itemprop="datePublished">May 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/05/07/Weight-deacy/">Weight deacy</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-04-15T08:04:10.000Z" itemprop="datePublished">Apr 15</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">样本方差公式推导</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T03:07:26.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pandas小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T02:31:28.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pytorch小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/08/Machine-Learning-Notes-III/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-08T08:44:19.000Z" itemprop="datePublished">Nov 8</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/08/Machine-Learning-Notes-III/">Machine Learning Notes(III)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-07T07:23:29.000Z" itemprop="datePublished">Nov 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/">模运算与快速幂算法</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/05/Machine-Learning-Notes-II/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-05T10:00:15.000Z" itemprop="datePublished">Nov 5</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/05/Machine-Learning-Notes-II/">Machine Learning Notes(II)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-10-29T08:25:32.000Z" itemprop="datePublished">Oct 29</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">Pytorch实现鸢尾花分类问题</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         

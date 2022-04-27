@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>Archives | Hexo</title>
+  <title>C语言中的Side Effect与Sequence Point | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="如果你只想规规矩矩地写代码，那么基本用不着看这个。此文章中的写法都应该避免使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言中的Side Effect与Sequence Point">
+<meta property="og:url" content="http://example.com/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如果你只想规规矩矩地写代码，那么基本用不着看这个。此文章中的写法都应该避免使用。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-02T10:04:16.000Z">
+<meta property="article:modified_time" content="2020-05-31T10:10:24.491Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -69,226 +73,102 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/10/13/test-file/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-10-13T12:42:29.000Z" itemprop="datePublished">Oct 13</time>
+        <section id="main"><article id="post-C语言中的Side-Effect与Sequence-Point" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/" class="article-date">
+  <time class="dt-published" datetime="2020-04-02T10:04:16.000Z" itemprop="datePublished">2020-04-02</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/13/test-file/">test file</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      C语言中的Side Effect与Sequence Point
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>如果你只想规规矩矩地写代码，那么基本用不着看这个。此文章中的写法都应该避免使用。</p>
+<span id="more"></span>
+
+<p>我们来看下面这段代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line">a = (++a) + (++a) + (++a) + (++a);</span><br></pre></td></tr></table></figure>
+
+<p>据我了解，似乎很多公司都有出这种笔试题的恶趣味。答案应该是 <strong>Undefined</strong>，我甚至有些怀疑出题的人是否真的知道答案。下面我来解释为什么是 Undefined。</p>
+<p>我们知道，调用一个函数可能产生 <strong>Side Effect</strong>，使用某些运算符（++、–、&#x3D;、复合赋值）也会产生 Side Effect，如果一个表达式中隐含着多个 Side Effect，究竟哪个先发生哪个后发生呢？C 标准规定代码执行过程中的某些时刻是 <strong>Sequence Point</strong>，当到达一个 Sequence Point 时，在此之前的 Side Effect  必须全部作用完毕，在此之后的 Side Effec t必须一个都没发生。至于两个 Sequence Point 之间的多个 Side Effect 哪个先发生哪个后发生则没有规定，编译器可以任意选择各 Side Effect 的作用顺序。下面详细解释各种 Sequence Point。</p>
+<ol>
+<li><p>调用一个函数时，在所有准备工作做完之后、函数调用开始之前是 Sequence Point。比如调用 foo(f(), g()) 时，foo、f()、g() 这三个表达式哪个先求值哪个后求值是 <strong>Unspecified</strong>，但是必须都求值完了才能做最后的函数调用，所以 f() 和 g() 的 Side Effect 按什么顺序发生不一定，但必定在这些 Side Effect 全部作用完之后才开始调用 foo 函数。</p>
+</li>
+<li><p>条件表达式 **?:**、逗号运算符 <strong>,</strong> 、逻辑与 <strong>&amp;&amp;</strong> 、逻辑或 <strong>||</strong> 的第一个操作数求值之后是 Sequence Point。我们刚讲过条件表达式和逗号运算符，条件表达式要根据表达式 1 的值是否为真决定下一步求表达式 2 还是表达式 3 的值，如果决定求表达式 2 的值，表达式 3 就不会被求值了，反之也一样，逗号运算符也是这样，表达式 1 求值结束才继续求表达式 2 的值。</p>
+</li>
+</ol>
+<p>逻辑与和逻辑或这两个运算符和条件表达式类似，先求左操作数的值，然后根据这个值是否为真，右操作数可能被求值，也可能不被求值。比如下面这个程序中的这几句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   ret = <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;man);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">1</span> || man &lt; <span class="number">0</span> || man &gt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Invalid input! Please input 0, 1 or 2.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实可以写得更简单：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;man) != <span class="number">1</span> || man &lt; <span class="number">0</span> || man &gt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Invalid input! Please input 0, 1 or 2.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个控制表达式的求值顺序是：先求 <code>scanf(&quot;%d&quot;, &amp;man) = 1</code> 的值，如果 scanf 调用失败，则返回值不等于1 成立，|| 运算有一个操作数为真则整个表达式为真，这时直接执行下一句 printf，根本不会再去求 man &lt; 0 或 man &gt; 2 的值；如果 scanf 调用成功，则读入的数保存在变量 man 中，并且返回值等于 1，那么说它不等于 1 就不成立了，第一个 || 运算的左操作数为假，就会去求右操作数 man &lt; 0 的值作为整个表达式的值，这时变量 man 的值正是scanf 读上来的值，我们判断它是否在 [0, 2] 之间，如果 man &lt; 0 不成立，则整个表达式 scanf(“%d”, &amp;man) !&#x3D; 1 || man &lt; 0 的值为假，也就是第二个 || 运算的左操作数为假，所以最后求右操作数 man &gt; 2 的值作为整个表达式的值。</p>
+<p>&amp;&amp; 运算与此类似，a &amp;&amp; b 的计算过程是：首先求 a，如果 a 的值是假则整个表达式的值是假，不会再去求 b；如果a 的值是真，则下一步求 b 的值作为整个表达式的值。所以，a &amp;&amp; b 相当于 if (a) b;，而 a || b 相当于 if (!a) b; 。这种特性称为 Short-circuit，很多人喜欢利用 Short-circuit 特性使代码更加简洁。</p>
+<ol start="3">
+<li><p>在一个完整的声明末尾是 Sequence Point，所谓完整的声明是指这个声明不是另外一个声明的一部分。比如声明 int a[10], b[20];，在 a[10] 末尾是 Sequence Point，在 b[20] 末尾也是。</p>
+</li>
+<li><p>在一个完整的表达式末尾是 Sequence Point，所谓完整的表达式是指这个表达式不是另外一个表达式的一部分。所以如果有 f(); g(); 这样两条语句，f() 和 g() 是两个完整的表达式，f() 的 Side Effect 必定在 g() 之前发生。</p>
+</li>
+<li><p>在库函数返回时是 Sequence Point。这似乎可以包含在上一条规则里面，因为函数返回必然会结束掉一个表达式，开始一个新的表达式。事实上以后我们会讲到，很多库函数是以宏定义的形式实现的，并不是真的函数，所以才需要有这条规则。</p>
+</li>
+<li><p>像 printf、scanf 这种带转换说明的输入&#x2F;输出库函数，在处理完每一个转换说明相关的输入&#x2F;输出操作时是一个Sequence Point。</p>
+</li>
+<li><p>库函数 bsearch 和 qsort 在查找和排序过程中的每一步比较或移动操作之间是一个 Sequence Point。</p>
+</li>
+</ol>
+<p>现在可以分析一下本节开头的例子了。<code>a = (++a) + (++a) + (++a) + (++a);</code>  的结果之所 Undefined, 是因为在这个表达式中对变量 a 的 Side Effect 有五次，这些 Side Effect 何时发生、按什么顺序发生是不一定的，只知道在整个表达式结束时一定都发生了，但在计算过程中要用到a的值时，能取出什么值就不确定了。这行代码用不同平台的不同编译器来编译，结果是不同的，甚至在同一平台上用同一编译器的不同版本来编译也可能不同。</p>
+<p>写表达式应遵循的原则一：在两个 Sequence Point 之间，同一个变量的值只允许被改变一次。仅有这一条原则还不够，例如 a[i++] &#x3D; i; 的变量 i 只改变了一次，但结果仍是 Undefined，因为等号左边改i的值，等号右边读 i 的值，到底是先改还是先读？这个读写顺序是不确定的。但为什么 i &#x3D; i + 1; 就没有歧义呢？虽然也是等号左边改 i 的值，等号右边读i的值，但你不读出i的值就没法计算 i + 1，那拿什么去改i的值呢？所以这个读写顺序是确定的。所以，写表达式应遵循的原则二：如果在两个 Sequence Point 之间既要读一个变量的值又要改它的值，只有在读写顺序确定的情况下才可以这么写。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/" data-id="cl2hg7st0000adwbl25euf3v2" data-title="C语言中的Side Effect与Sequence Point" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/20/C%E8%AF%AD%E8%A8%80%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          C语言随机数生成
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/01/Euclid%E7%AE%97%E6%B3%95%E8%AF%81%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Euclid算法证明</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-07-08T17:59:13.000Z" itemprop="datePublished">Jul 9</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/">Turtle 画图示例</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/05/07/Weight-deacy/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-05-07T12:24:52.000Z" itemprop="datePublished">May 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/05/07/Weight-deacy/">Weight deacy</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-04-15T08:04:10.000Z" itemprop="datePublished">Apr 15</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">样本方差公式推导</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T03:07:26.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pandas小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T02:31:28.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pytorch小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/08/Machine-Learning-Notes-III/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-08T08:44:19.000Z" itemprop="datePublished">Nov 8</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/08/Machine-Learning-Notes-III/">Machine Learning Notes(III)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-07T07:23:29.000Z" itemprop="datePublished">Nov 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/">模运算与快速幂算法</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/05/Machine-Learning-Notes-II/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-05T10:00:15.000Z" itemprop="datePublished">Nov 5</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/05/Machine-Learning-Notes-II/">Machine Learning Notes(II)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-10-29T08:25:32.000Z" itemprop="datePublished">Oct 29</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">Pytorch实现鸢尾花分类问题</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         

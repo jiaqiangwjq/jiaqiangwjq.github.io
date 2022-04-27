@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>使用gdb调试程序 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在 Linux 下写 C 语言程序，不会 gdb 可不行，这篇文章就来教大家我自己如何使用 gdb 来调试 C 程序。后期还会再写一篇关于 gcc 的命令参数的文章，那就比较简单了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用gdb调试程序">
+<meta property="og:url" content="http://example.com/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在 Linux 下写 C 语言程序，不会 gdb 可不行，这篇文章就来教大家我自己如何使用 gdb 来调试 C 程序。后期还会再写一篇关于 gcc 的命令参数的文章，那就比较简单了。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/QibMoPzRnDZm2XB.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/26/5d132132c538479358.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/26/5d1321430f88455084.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/9oy4vx3mjuwa68s.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/QqvHSTRGBaDIx7y.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/wYA7h65MZFjB8WG.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/P2rybh4JmodtTaO.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/OfTNZFDz3mtMelV.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/r5sIBKVZbR2qm7U.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/6C4MazeqgXtJpGZ.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/KwHXCBRmhlsQzIL.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/w6ViNqD5C7LoW1O.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/DHcdqRCh4sSZ7ov.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/CDec4uthpoX1lyj.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/BJZhyImTEYc1XW2.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/gCjzKn9aEYAywXp.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/EpBc54DzLCOKymF.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/746tCaVX2WsxrPd.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/k8YCWrSgaiUm9HR.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/fNUQXGHI18jzBhw.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/IytoqrbgJGwjW6d.png">
+<meta property="article:published_time" content="2019-06-20T07:16:11.000Z">
+<meta property="article:modified_time" content="2020-12-20T03:49:19.096Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="gdb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/12/20/QibMoPzRnDZm2XB.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-使用gdb调试程序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/" class="article-date">
+  <time class="dt-published" datetime="2019-06-20T07:16:11.000Z" itemprop="datePublished">2019-06-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      使用gdb调试程序
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在 Linux 下写 C 语言程序，不会 gdb 可不行，这篇文章就来教<s>大家</s>我自己如何使用 gdb 来调试 C 程序。后期还会再写一篇关于 gcc 的命令参数的文章，那就比较简单了。</p>
+<span id="more"></span>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>开始调试之前，必须用程序中的调试信息编译要调试的程序。这样，gdb 才能够调试所使用的变量、代码行和函数。即，使用 ‘-g’ 选项来编译程序：</p>
+<blockquote>
+<p>gcc -g main.c -o main</p>
+</blockquote>
+<h2 id="运行-gdb"><a href="#运行-gdb" class="headerlink" title="运行 gdb"></a>运行 gdb</h2><p>在 shell 中，可以使用 <code>gdb</code> 命令并指定程序名作为参数来运行 gdb，例如 <code>gdb main</code>；或者<strong>在 gdb 中</strong>，可以使用 <code>file</code> 命令来装入要调试的程序，例如 <code>file main</code>。<br>这两种方式都假设你是在包含程序的目录中执行命令。装入程序之后，可以用命令 <code>run</code> 来启动程序。</p>
+<h2 id="调试会话示例"><a href="#调试会话示例" class="headerlink" title="调试会话示例"></a>调试会话示例</h2><p>如果一切正常，程序将执行到结束，返回 gdb 程序。如果出现错误的话，gdb 会中断程序，从而可以让我们检查程序的状态。<br>示例如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">wib</span><span class="params">(<span class="type">int</span> no1, <span class="type">int</span> no2)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> result, diff;</span><br><span class="line">  diff = no1 - no2;</span><br><span class="line">  result = no1 / diff;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> value, div, result, i, total;</span><br><span class="line">  value = <span class="number">10</span>;</span><br><span class="line">  div = <span class="number">6</span>;</span><br><span class="line">  total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    result = wib(value, div);</span><br><span class="line">    total += result;</span><br><span class="line">    div++;</span><br><span class="line">    value--;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%d wibed by %d equals %d\n&quot;</span>, value, div, total);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序将进行 10 次 for 循环，使用 <strong>wib()</strong> 函数计算出累积值，最后打印出结果。下面我们就来试一试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim main.c </span><br><span class="line">gcc -g main.c -o main</span><br><span class="line">gdb main    /* 这条命令用来启动可执行文件 main */</span><br></pre></td></tr></table></figure>
+<p>这个时候，我们使用 <code>run</code> 命令运行程序会产生以下消息:<br><img src="https://i.loli.net/2020/12/20/QibMoPzRnDZm2XB.png" alt="gdb main"></p>
+<p>该消息指出在程序第 7 行发生一个算术异常，可以看到它打印了一行的代码以及 wib() 函数的自变量值。要查看第 7 行前后的其它代码，可以使用 <code>list</code> 命令，它会打印前 10 行代码，再次输入 <code>list</code>（或者按回车重复上一条命令）将列出程序的下 10 行。</p>
+<p>要查看变量的值，可以使用 <code>print</code> 命令并指定变量名。例如:<br><img src="https://i.loli.net/2019/06/26/5d132132c538479358.png" alt="图 2"></p>
+<p>可以看到变量 no1 等于 8，变量 diff 等于 0。根据这些值和第 7 行中的语句，我们可以推断出算术异常是由除数为 0 的运算造成的。<br>接下来，我们使用 <code>continue</code> 命令（或简写为 <strong>c</strong>）来让程序继续执行，直到结束。</p>
+<p><img src="https://i.loli.net/2019/06/26/5d1321430f88455084.png" alt="图 3"></p>
+<h2 id="使用断点"><a href="#使用断点" class="headerlink" title="使用断点"></a>使用断点</h2><p>为了查看在 <strong>main()</strong> 中发生了什么事情，我们可以在程序代码中的某一特定行或函数中设置断点，这样程序会在遇到断点时中断执行。可以使用命令 <code>break main</code> 在进入 <strong>main()</strong> 函数时设置断点，或者可以指定其它任何函数名来设置断点。然而，我们只希望在调用 <strong>wib()</strong> 函数之前中断执行。<code>list main</code> 命令将打印从 <strong>main()</strong> 函数开始的源码清单，再次按回车将显示第 20 行上的 <strong>wib()</strong> 函数调用。</p>
+<p>如下图所示：</p>
+<p><img src="https://i.loli.net/2020/12/20/9oy4vx3mjuwa68s.png" alt="list main"></p>
+<p>假如我们要在第 20 行上设置断点，只需输入 <code>break 21</code> 即可。</p>
+<p><img src="https://i.loli.net/2020/12/20/QqvHSTRGBaDIx7y.png" alt="break 20"></p>
+<p>设置完断点后，我们可以使用 <code>run</code> 命令来重新运行程序，直到 gdb 中断为止。</p>
+<p><img src="https://i.loli.net/2020/12/20/wYA7h65MZFjB8WG.png" alt="重新 run"></p>
+<p>我们可以使用 <code>info locals</code> 命令来显示程序第一次遇到断点时，各个变量的值。（当然，也可以使用 <code>pirnt 变量名</code> 的方式，稍微麻烦些）</p>
+<p><img src="https://i.loli.net/2020/12/20/P2rybh4JmodtTaO.png" alt="info locals"></p>
+<p>输入 <code>continue</code> 命令继续执行，直到程序下一次遇到断点。</p>
+<p><img src="https://i.loli.net/2020/12/20/OfTNZFDz3mtMelV.png" alt="vmplayer_1wX1oNPq1o.png"></p>
+<p>与其再次继续，还不如使用 <code>next </code>命令单步调试程序，以查看变量 <strong>value</strong> 和 <strong>div</strong> 是如何改变的。</p>
+<p>可以从下图中看到，<strong>div</strong> 自增，<strong>value</strong> 自减。</p>
+<p><img src="https://i.loli.net/2020/12/20/r5sIBKVZbR2qm7U.png" alt="next"></p>
+<p>继续 next，再次遇到断点时，我们使用 info locals 查看一下变量的值。</p>
+<p><img src="https://i.loli.net/2020/12/20/6C4MazeqgXtJpGZ.png" alt="继续 next"></p>
+<p>可以看到，此时 div 的值与 value 的值相等，继续执行，就可以看到 <strong>算术异常</strong> 的提示。</p>
+<p><img src="https://i.loli.net/2020/12/20/KwHXCBRmhlsQzIL.png" alt="算术异常"></p>
+<h2 id="断点和观察点"><a href="#断点和观察点" class="headerlink" title="断点和观察点"></a>断点和观察点</h2><h3 id="使用断点-1"><a href="#使用断点-1" class="headerlink" title="使用断点"></a>使用断点</h3><p>由于我们想要知道在调用 wib() 函数之前 value 什么时候等于 div，因此在上一示例中我们在第 20 行中设置断点。我们必须继续执行两次程序才会发生这种情况。</p>
+<p>事实上，只要在断点上设置一个条件就可以使 gdb 只在 value 与 div 相等时暂停，如下所示。</p>
+<p><img src="https://i.loli.net/2020/12/20/w6ViNqD5C7LoW1O.png" alt="condition"></p>
+<p>这里，<strong>condition</strong> 后面的数字 <strong>1</strong>，指的是 <strong>1 号断点</strong>。我们在执行完 break 20 后的输出提示中也能看到 1 号断点的相关信息。</p>
+<p>此外，这两条命令还可以合成一条写：<strong>break 20 if value&#x3D;&#x3D;div</strong>。</p>
+<p>使用 <strong>run</strong> 命令再次执行程序，直到中断为止，查看一下 value 是否等于 div。</p>
+<p><img src="https://i.loli.net/2020/12/20/DHcdqRCh4sSZ7ov.png" alt="run"></p>
+<p>要查看当前定义了哪些断点及其条件，可以用 <code>info break</code>命令。</p>
+<p>可以用 <code>disable 1</code>、<code>enable 1</code>、<code>delete 1</code> 来禁用、启用和删除断点。例如， <strong>disable 1</strong> 将禁用我们之前用 <strong>break 20</strong> 所设置的 1 号断点。</p>
+<p><img src="https://i.loli.net/2020/12/20/CDec4uthpoX1lyj.png" alt="info break"></p>
+<h3 id="使用观察点"><a href="#使用观察点" class="headerlink" title="使用观察点"></a>使用观察点</h3><p>如果我们对 <strong>value</strong> 什么时候变得与 div 相等更感兴趣，那么可以使用另一种断点，称作 <strong>监视</strong>。当指定表达式的值改变时，监视点将中断程序执行，但必须在表达式中所使用的变量在作用域中时设置监视点。要获取作用域中的 value 和 div，可以在 main 函数上设置断点，然后运行程序，当遇到 main() 断点时设置监视点。</p>
+<p><img src="https://i.loli.net/2020/12/20/BJZhyImTEYc1XW2.png" alt="重新调试"></p>
+<p>要了解 div 何时更改，可以使用 <code>watch div</code>，但由于要在 div 等于 value 时中断，所以还要设置一下条件。继续执行，当条件 <strong>div&#x3D;&#x3D;value</strong> 为真时，程序中断，此时我们再查看一下变量的值，可以看到两个变量的值确实是相等的。</p>
+<p><img src="https://i.loli.net/2020/12/20/gCjzKn9aEYAywXp.png" alt="watch"></p>
+<p>和之前一样，我们也可以用 <code>info watch</code> 命令来查看当前已经设置的观察点。其他的 enable、disable、delete 也都是类似的。</p>
+<p><img src="https://i.loli.net/2020/12/20/EpBc54DzLCOKymF.png" alt="info watch"></p>
+<h2 id="堆栈跟踪"><a href="#堆栈跟踪" class="headerlink" title="堆栈跟踪"></a>堆栈跟踪</h2><p>程序 <strong>调用堆栈</strong> 是当前函数之前的所有已调用函数的列表（包括当前函数）。每个函数及其变量都被分配了一个 <strong>帧</strong>，<strong>最近调用的函数在 0 号帧中</strong>（底部帧）。打印堆栈，可使用命令 <code>bt</code>（backtrace 的缩写）。</p>
+<p><img src="https://i.loli.net/2020/12/20/746tCaVX2WsxrPd.png" alt="bt"></p>
+<p>此结果显示了在 main() 的第 20 行中调用了函数 wib()（只要使用 <strong>list 20</strong> 就能证实这一点），而且 wib() 在 0 号帧中，main() 在 1 号帧中。由于 wib() 在 0 号帧中（最近调用的函数），那么它就是执行程序时发生算术错误的函数。</p>
+<p>实际上，发出 <strong>info locals</strong> 命令时，gdb 会打印出当前帧中的局部变量，缺省情况下，这个帧中的函数就是被中断的函数（0 号帧）。</p>
+<p><img src="https://i.loli.net/2020/12/20/k8YCWrSgaiUm9HR.png" alt="info locals in frame 0"></p>
+<p>可以使用命令 <code>frame</code> 打印当前帧。</p>
+<p>要查看 main 函数（在 1 号帧中）中的变量，可以发出 <strong>frame 1</strong> 切换到 1 号帧，然后使用 <strong>info locals</strong> 命令。</p>
+<p><img src="https://i.loli.net/2020/12/20/fNUQXGHI18jzBhw.png" alt="frame"></p>
+<p>在程序运行时，还可以使用 <code>set </code> 命令修改变量的值。在 gdb 下再次运行程序，使用命令 <strong>break 7 if diff&#x3D;&#x3D;0</strong> 在第 7 行（将在此处计算结果）设置条件断点，然后运行程序。当 gdb 中断执行时，可以将 <strong>diff</strong> 设置成非零值，使程序继续运行直至结束。</p>
+<p><img src="https://i.loli.net/2020/12/20/IytoqrbgJGwjW6d.png" alt="set"></p>
+<hr>
+<p>本文只介绍了很小一部分 gdb 的功能，还有待继续学习。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/" data-id="cl2hg7stm001gdwbl9ccxen4m" data-title="使用gdb调试程序" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gdb/" rel="tag">gdb</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/20/%E5%A4%84%E7%90%86%E6%9C%BA%E4%B8%8ECPU/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          处理机与CPU
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/16/Matlab%E4%B8%AD%E7%9A%84%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Matlab中的矩阵运算</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Matlab/">Matlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%90%9C%E7%B4%A2%E7%AD%96%E7%95%A5/">搜索策略</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%80%83%E7%A0%94%E8%8B%B1%E8%AF%AD/">考研英语</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/408%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%BB%BC%E5%90%88/" rel="tag">408计算机基础综合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag">C语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matlab/" rel="tag">Matlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pandas/" rel="tag">Pandas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pytorch/" rel="tag">Pytorch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rand/" rel="tag">rand</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/srand/" rel="tag">srand</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E6%96%87/" rel="tag">作文</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%9D%E9%99%A9/" rel="tag">保险</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%9D%E9%99%A9%E7%A7%91%E6%99%AE/" rel="tag">保险科普</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE/" rel="tag">图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%84%E7%90%86%E6%9C%BA/" rel="tag">处理机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E5%B7%A7/" rel="tag">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/" rel="tag">理论知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97/" rel="tag">矩阵运算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E7%BF%BB%E8%AF%91-%E8%80%83%E7%A0%94%E8%8B%B1%E8%AF%AD/" rel="tag">英语翻译, 考研英语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/" rel="tag">辗转相除法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%A9%E8%AE%BA/" rel="tag">辩论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E6%95%B0/" rel="tag">高数</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/408%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%BB%BC%E5%90%88/" style="font-size: 10px;">408计算机基础综合</a> <a href="/tags/Algorithm/" style="font-size: 13.33px;">Algorithm</a> <a href="/tags/C%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">C语言</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Pytorch/" style="font-size: 16.67px;">Pytorch</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/tags/rand/" style="font-size: 10px;">rand</a> <a href="/tags/srand/" style="font-size: 10px;">srand</a> <a href="/tags/%E4%BD%9C%E6%96%87/" style="font-size: 10px;">作文</a> <a href="/tags/%E4%BF%9D%E9%99%A9/" style="font-size: 10px;">保险</a> <a href="/tags/%E4%BF%9D%E9%99%A9%E7%A7%91%E6%99%AE/" style="font-size: 10px;">保险科普</a> <a href="/tags/%E5%9B%BE/" style="font-size: 10px;">图</a> <a href="/tags/%E5%A4%84%E7%90%86%E6%9C%BA/" style="font-size: 10px;">处理机</a> <a href="/tags/%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">技巧</a> <a href="/tags/%E6%90%9C%E7%B4%A2/" style="font-size: 10px;">搜索</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 20px;">操作系统</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">理论知识</a> <a href="/tags/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97/" style="font-size: 10px;">矩阵运算</a> <a href="/tags/%E8%8B%B1%E8%AF%AD%E7%BF%BB%E8%AF%91-%E8%80%83%E7%A0%94%E8%8B%B1%E8%AF%AD/" style="font-size: 13.33px;">英语翻译, 考研英语</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/" style="font-size: 10px;">辗转相除法</a> <a href="/tags/%E8%BE%A9%E8%AE%BA/" style="font-size: 10px;">辩论</a> <a href="/tags/%E9%AB%98%E6%95%B0/" style="font-size: 13.33px;">高数</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/13/test-file/">test file</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/">Turtle 画图示例</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/07/Weight-deacy/">Weight deacy</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">样本方差公式推导</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pandas小知识</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

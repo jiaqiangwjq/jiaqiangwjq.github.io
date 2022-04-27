@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>Archives | Hexo</title>
+  <title>模运算与快速幂算法 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="最近的日常学习又涉及到了不少和 mod 有关的计算，这些计算虽然都不是很难，但有的还是需要一点点小技巧。忖，遂记之。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模运算与快速幂算法">
+<meta property="og:url" content="http://example.com/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="最近的日常学习又涉及到了不少和 mod 有关的计算，这些计算虽然都不是很难，但有的还是需要一点点小技巧。忖，遂记之。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-07T07:23:29.000Z">
+<meta property="article:modified_time" content="2020-11-08T11:12:57.846Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -69,226 +73,76 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/10/13/test-file/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-10-13T12:42:29.000Z" itemprop="datePublished">Oct 13</time>
+        <section id="main"><article id="post-模运算与快速幂算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2020-11-07T07:23:29.000Z" itemprop="datePublished">2020-11-07</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/13/test-file/">test file</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      模运算与快速幂算法
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近的日常学习又涉及到了不少和 <strong>mod</strong> 有关的计算，这些计算虽然都不是很难，但有的还是需要一点点小技巧。<br>忖，遂记之。</p>
+<span id="more"></span>
+
+<h3 id="模运算公式"><a href="#模运算公式" class="headerlink" title="模运算公式"></a>模运算公式</h3><p>$$<br>X  ; mod ; 0 ; &#x3D; ; 0 \<br>(a ; \pm ; b)  ; % ; p ; &#x3D; ; (a , % , p ; \pm ; b,%, p) ;%; p \<br>(a ;\times; b) ;%; p ;&#x3D;; (a ,%, p ;\times; b,%, p) ;%; p \<br>((a+b);%;p ;+; c);%; p ;&#x3D;; (a+(b+c);%; p);%; p \<br>((a+b)% p ;\times; c);%; p ;&#x3D;; ((a\times c);%; p ;+; (b\times c)% p);%; p<br>\<br>\color{\red} {a^b ;%; p ;&#x3D;; ((a;%;p)^b) ;%; p}<br>$$</p>
+<hr>
+<h3 id="快速幂算法"><a href="#快速幂算法" class="headerlink" title="快速幂算法"></a>快速幂算法</h3><p>上面那堆公式里，有一行红色公式就是这里的主角了，可以用它来快速计算 $ a^b ;%; p$ 的结果。</p>
+<p>直接上代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="title function_">func</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> a, <span class="type">unsigned</span> <span class="type">long</span> b, <span class="type">unsigned</span> <span class="type">long</span> p)</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> result = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (b) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (b &amp; <span class="number">1</span>)</span><br><span class="line">            result = (result * a) % p;</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        a = (a * a) % p;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码比较简单，也很直观，就不多做解释了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/" data-id="cl2hg7suh0030dwbl0owd81e4" data-title="模运算与快速幂算法" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/08/Machine-Learning-Notes-III/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Machine Learning Notes(III)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/05/Machine-Learning-Notes-II/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Machine Learning Notes(II)</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-07-08T17:59:13.000Z" itemprop="datePublished">Jul 9</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/09/Turtle-%E7%94%BB%E5%9B%BE%E7%A4%BA%E4%BE%8B/">Turtle 画图示例</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/05/07/Weight-deacy/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-05-07T12:24:52.000Z" itemprop="datePublished">May 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/05/07/Weight-deacy/">Weight deacy</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-04-15T08:04:10.000Z" itemprop="datePublished">Apr 15</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/15/%E6%A0%B7%E6%9C%AC%E6%96%B9%E5%B7%AE%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">样本方差公式推导</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T03:07:26.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pandas%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pandas小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-12-04T02:31:28.000Z" itemprop="datePublished">Dec 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/04/Pytorch%E5%B0%8F%E7%9F%A5%E8%AF%86/">Pytorch小知识</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/08/Machine-Learning-Notes-III/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-08T08:44:19.000Z" itemprop="datePublished">Nov 8</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/08/Machine-Learning-Notes-III/">Machine Learning Notes(III)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-07T07:23:29.000Z" itemprop="datePublished">Nov 7</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/07/%E6%A8%A1%E8%BF%90%E7%AE%97%E4%B8%8E%E5%BF%AB%E9%80%9F%E5%B9%82%E7%AE%97%E6%B3%95/">模运算与快速幂算法</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/05/Machine-Learning-Notes-II/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-11-05T10:00:15.000Z" itemprop="datePublished">Nov 5</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/05/Machine-Learning-Notes-II/">Machine Learning Notes(II)</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-10-29T08:25:32.000Z" itemprop="datePublished">Oct 29</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/29/Pytorch%E5%AE%9E%E7%8E%B0%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">Pytorch实现鸢尾花分类问题</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         
