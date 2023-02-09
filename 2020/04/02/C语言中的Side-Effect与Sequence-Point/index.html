@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如果你只想规规矩矩地写代码，那么基本用不着看这个。此文章中的写法都应该避免使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言中的Side Effect与Sequence Point">
+<meta property="og:url" content="http://example.com/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/index.html">
+<meta property="og:site_name" content="Jiaqiang&#39;s Blog">
+<meta property="og:description" content="如果你只想规规矩矩地写代码，那么基本用不着看这个。此文章中的写法都应该避免使用。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-02T10:04:16.000Z">
+<meta property="article:modified_time" content="2020-05-31T10:10:24.491Z">
+<meta property="article:author" content="Jiaqiang Wu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/","path":"2020/04/02/C语言中的Side-Effect与Sequence-Point/","title":"C语言中的Side Effect与Sequence Point"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C语言中的Side Effect与Sequence Point | Jiaqiang's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jiaqiang's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日拱一卒，功不唐捐</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiaqiang Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiaqiangwjq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiaqiangwjq" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jiaqiangwjq@gmail.com" title="E-Mail → mailto:jiaqiangwjq@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiaqiang Wu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C语言中的Side Effect与Sequence Point | Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C语言中的Side Effect与Sequence Point
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-04-02 18:04:16" itemprop="dateCreated datePublished" datetime="2020-04-02T18:04:16+08:00">2020-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-05-31 18:10:24" itemprop="dateModified" datetime="2020-05-31T18:10:24+08:00">2020-05-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/04/02/C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84Side-Effect%E4%B8%8ESequence-Point/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/02/C语言中的Side-Effect与Sequence-Point/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>如果你只想规规矩矩地写代码，那么基本用不着看这个。此文章中的写法都应该避免使用。</p>
+<span id="more"></span>
+
+<p>我们来看下面这段代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line">a = (++a) + (++a) + (++a) + (++a);</span><br></pre></td></tr></table></figure>
+
+<p>据我了解，似乎很多公司都有出这种笔试题的恶趣味。答案应该是 <strong>Undefined</strong>，我甚至有些怀疑出题的人是否真的知道答案。下面我来解释为什么是 Undefined。</p>
+<p>我们知道，调用一个函数可能产生 <strong>Side Effect</strong>，使用某些运算符（++、–、&#x3D;、复合赋值）也会产生 Side Effect，如果一个表达式中隐含着多个 Side Effect，究竟哪个先发生哪个后发生呢？C 标准规定代码执行过程中的某些时刻是 <strong>Sequence Point</strong>，当到达一个 Sequence Point 时，在此之前的 Side Effect  必须全部作用完毕，在此之后的 Side Effec t必须一个都没发生。至于两个 Sequence Point 之间的多个 Side Effect 哪个先发生哪个后发生则没有规定，编译器可以任意选择各 Side Effect 的作用顺序。下面详细解释各种 Sequence Point。</p>
+<ol>
+<li><p>调用一个函数时，在所有准备工作做完之后、函数调用开始之前是 Sequence Point。比如调用 foo(f(), g()) 时，foo、f()、g() 这三个表达式哪个先求值哪个后求值是 <strong>Unspecified</strong>，但是必须都求值完了才能做最后的函数调用，所以 f() 和 g() 的 Side Effect 按什么顺序发生不一定，但必定在这些 Side Effect 全部作用完之后才开始调用 foo 函数。</p>
+</li>
+<li><p>条件表达式 **?:**、逗号运算符 <strong>,</strong> 、逻辑与 <strong>&amp;&amp;</strong> 、逻辑或 <strong>||</strong> 的第一个操作数求值之后是 Sequence Point。我们刚讲过条件表达式和逗号运算符，条件表达式要根据表达式 1 的值是否为真决定下一步求表达式 2 还是表达式 3 的值，如果决定求表达式 2 的值，表达式 3 就不会被求值了，反之也一样，逗号运算符也是这样，表达式 1 求值结束才继续求表达式 2 的值。</p>
+</li>
+</ol>
+<p>逻辑与和逻辑或这两个运算符和条件表达式类似，先求左操作数的值，然后根据这个值是否为真，右操作数可能被求值，也可能不被求值。比如下面这个程序中的这几句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   ret = <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;man);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">1</span> || man &lt; <span class="number">0</span> || man &gt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Invalid input! Please input 0, 1 or 2.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实可以写得更简单：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;man) != <span class="number">1</span> || man &lt; <span class="number">0</span> || man &gt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Invalid input! Please input 0, 1 or 2.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个控制表达式的求值顺序是：先求 <code>scanf(&quot;%d&quot;, &amp;man) = 1</code> 的值，如果 scanf 调用失败，则返回值不等于1 成立，|| 运算有一个操作数为真则整个表达式为真，这时直接执行下一句 printf，根本不会再去求 man &lt; 0 或 man &gt; 2 的值；如果 scanf 调用成功，则读入的数保存在变量 man 中，并且返回值等于 1，那么说它不等于 1 就不成立了，第一个 || 运算的左操作数为假，就会去求右操作数 man &lt; 0 的值作为整个表达式的值，这时变量 man 的值正是scanf 读上来的值，我们判断它是否在 [0, 2] 之间，如果 man &lt; 0 不成立，则整个表达式 scanf(“%d”, &amp;man) !&#x3D; 1 || man &lt; 0 的值为假，也就是第二个 || 运算的左操作数为假，所以最后求右操作数 man &gt; 2 的值作为整个表达式的值。</p>
+<p>&amp;&amp; 运算与此类似，a &amp;&amp; b 的计算过程是：首先求 a，如果 a 的值是假则整个表达式的值是假，不会再去求 b；如果a 的值是真，则下一步求 b 的值作为整个表达式的值。所以，a &amp;&amp; b 相当于 if (a) b;，而 a || b 相当于 if (!a) b; 。这种特性称为 Short-circuit，很多人喜欢利用 Short-circuit 特性使代码更加简洁。</p>
+<ol start="3">
+<li><p>在一个完整的声明末尾是 Sequence Point，所谓完整的声明是指这个声明不是另外一个声明的一部分。比如声明 int a[10], b[20];，在 a[10] 末尾是 Sequence Point，在 b[20] 末尾也是。</p>
+</li>
+<li><p>在一个完整的表达式末尾是 Sequence Point，所谓完整的表达式是指这个表达式不是另外一个表达式的一部分。所以如果有 f(); g(); 这样两条语句，f() 和 g() 是两个完整的表达式，f() 的 Side Effect 必定在 g() 之前发生。</p>
+</li>
+<li><p>在库函数返回时是 Sequence Point。这似乎可以包含在上一条规则里面，因为函数返回必然会结束掉一个表达式，开始一个新的表达式。事实上以后我们会讲到，很多库函数是以宏定义的形式实现的，并不是真的函数，所以才需要有这条规则。</p>
+</li>
+<li><p>像 printf、scanf 这种带转换说明的输入&#x2F;输出库函数，在处理完每一个转换说明相关的输入&#x2F;输出操作时是一个Sequence Point。</p>
+</li>
+<li><p>库函数 bsearch 和 qsort 在查找和排序过程中的每一步比较或移动操作之间是一个 Sequence Point。</p>
+</li>
+</ol>
+<p>现在可以分析一下本节开头的例子了。<code>a = (++a) + (++a) + (++a) + (++a);</code>  的结果之所 Undefined, 是因为在这个表达式中对变量 a 的 Side Effect 有五次，这些 Side Effect 何时发生、按什么顺序发生是不一定的，只知道在整个表达式结束时一定都发生了，但在计算过程中要用到a的值时，能取出什么值就不确定了。这行代码用不同平台的不同编译器来编译，结果是不同的，甚至在同一平台上用同一编译器的不同版本来编译也可能不同。</p>
+<p>写表达式应遵循的原则一：在两个 Sequence Point 之间，同一个变量的值只允许被改变一次。仅有这一条原则还不够，例如 a[i++] &#x3D; i; 的变量 i 只改变了一次，但结果仍是 Undefined，因为等号左边改i的值，等号右边读 i 的值，到底是先改还是先读？这个读写顺序是不确定的。但为什么 i &#x3D; i + 1; 就没有歧义呢？虽然也是等号左边改 i 的值，等号右边读i的值，但你不读出i的值就没法计算 i + 1，那拿什么去改i的值呢？所以这个读写顺序是确定的。所以，写表达式应遵循的原则二：如果在两个 Sequence Point 之间既要读一个变量的值又要改它的值，只有在读写顺序确定的情况下才可以这么写。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>支持我续费域名吧~</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Jiaqiang Wu WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jiaqiang Wu Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/01/Euclid%E7%AE%97%E6%B3%95%E8%AF%81%E6%98%8E/" rel="prev" title="Euclid算法证明">
+                  <i class="fa fa-chevron-left"></i> Euclid算法证明
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/04/20/C%E8%AF%AD%E8%A8%80%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90/" rel="next" title="C语言随机数生成">
+                  C语言随机数生成 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiaqiang Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"jiaqiangwu","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

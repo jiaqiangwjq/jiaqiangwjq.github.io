@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这你都记不住？今晚给我复习到两点！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记不住的高数公式">
+<meta property="og:url" content="http://example.com/2019/07/25/%E8%AE%B0%E4%B8%8D%E4%BD%8F%E7%9A%84%E9%AB%98%E6%95%B0%E5%85%AC%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Jiaqiang&#39;s Blog">
+<meta property="og:description" content="这你都记不住？今晚给我复习到两点！">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-25T02:23:47.000Z">
+<meta property="article:modified_time" content="2022-11-04T13:28:23.190Z">
+<meta property="article:author" content="Jiaqiang Wu">
+<meta property="article:tag" content="高数">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2019/07/25/%E8%AE%B0%E4%B8%8D%E4%BD%8F%E7%9A%84%E9%AB%98%E6%95%B0%E5%85%AC%E5%BC%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/07/25/%E8%AE%B0%E4%B8%8D%E4%BD%8F%E7%9A%84%E9%AB%98%E6%95%B0%E5%85%AC%E5%BC%8F/","path":"2019/07/25/记不住的高数公式/","title":"记不住的高数公式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>记不住的高数公式 | Jiaqiang's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jiaqiang's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日拱一卒，功不唐捐</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%B8%B8%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">基本常识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E9%99%90%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">极限部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E7%A7%AF%E5%88%86%E9%83%A8%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">微积分部分</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiaqiang Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiaqiangwjq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiaqiangwjq" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jiaqiangwjq@gmail.com" title="E-Mail → mailto:jiaqiangwjq@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/07/25/%E8%AE%B0%E4%B8%8D%E4%BD%8F%E7%9A%84%E9%AB%98%E6%95%B0%E5%85%AC%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiaqiang Wu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="记不住的高数公式 | Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记不住的高数公式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-07-25 10:23:47" itemprop="dateCreated datePublished" datetime="2019-07-25T10:23:47+08:00">2019-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-11-04 21:28:23" itemprop="dateModified" datetime="2022-11-04T21:28:23+08:00">2022-11-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/07/25/%E8%AE%B0%E4%B8%8D%E4%BD%8F%E7%9A%84%E9%AB%98%E6%95%B0%E5%85%AC%E5%BC%8F/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/25/记不住的高数公式/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p>这你都记不住？今晚给我复习到两点！</p>
+<span id="more"></span>
+
+<h2 id="基本常识"><a href="#基本常识" class="headerlink" title="基本常识"></a>基本常识</h2><ul>
+<li>不等式<ul>
+<li><p>\( |,,|, a ,|, - , |, b ,|,,| \leq |, a \pm b ,| \leq |,a ,| + |, b ,| \)</p>
+</li>
+<li><p>\( \frac{2}{\frac{1}{a}+\frac{1}{b}}, \leq  , \sqrt{ab} , \leq , \frac{a+b}{2}, \leq , \sqrt{\frac{a^2+b^2}{2}} \)</p>
+</li>
+<li><p>\( \sqrt[3]{abc}, \leq , \frac{a+b+c}{3}, \leq , \frac{a^2+b^2+c^2}{3} \)</p>
+</li>
+<li><p>\( \sqrt[n]{a_1 a_2 \cdots a_n}, \leq , \frac{a_1+a_2+ \cdots + a_n}{n} \)</p>
+</li>
+</ul>
+</li>
+</ul>
+<br/>
+
+<ul>
+<li><p>立方公式</p>
+<ul>
+<li><p>\( a^3+b^3 &#x3D; (a+b),(a^2-ab+b^2) \)</p>
+</li>
+<li><p>\( a^3-b^3 &#x3D; (a-b),(a^2+ab+b^2) \)</p>
+</li>
+<li><p>\( (a - b)^3 &#x3D; a^3 - b^3 - 3a^2b + 3ab^2 \)</p>
+</li>
+<li><p>$$ (a+b)^n &#x3D; C_n^k , a^0 b^n + C_n^1 , a^1 b^{n-1} + C_n^2 , a^2 b^{n-2} + \cdots + C_n^n , a^n b^0 &#x3D; \sum_{k&#x3D;0}^n ; C_n^k , a^k b^{n-k} $$</p>
+</li>
+<li><p>$$ C_n^k &#x3D; \frac{n!}{k! , (n-k)!} $$</p>
+ <br></li>
+</ul>
+</li>
+<li><p>三角变换</p>
+<ul>
+<li>$$ \cos 2\alpha &#x3D; \cos ^2 \alpha - \sin ^2 \alpha &#x3D; 2 \cos ^2 \alpha - 1 &#x3D; 1 - 2 \sin ^2 \alpha $$</li>
+<li>$$ \tan 2\alpha &#x3D; \frac{2\tan \alpha}{1- \tan ^2 \alpha} $$</li>
+<li>$$ \sin ^2 \alpha &#x3D; \frac{1- \cos 2\alpha}{2} $$</li>
+<li>$$ \cos ^2 \alpha &#x3D; \frac{1+ \cos 2\alpha}{2} $$</li>
+<li>$$ \tan ^2 \alpha &#x3D; \frac{1- \cos 2\alpha}{1+ \cos 2\alpha} $$</li>
+</ul>
+</li>
+<li><p>分子有理化</p>
+<ul>
+<li>\( \sqrt[]{a} - \sqrt[]{b} &#x3D; \frac{a-b}{\sqrt[]{a}+\sqrt[]{b}} \)</li>
+</ul>
+</li>
+</ul>
+<p><a href="#%E5%BE%AE%E7%A7%AF%E5%88%86%E9%83%A8%E5%88%86">微积分部分</a></p>
+<h2 id="极限部分"><a href="#极限部分" class="headerlink" title="极限部分"></a>极限部分</h2><ul>
+<li><p>常用结论</p>
+<ul>
+<li>$$ x&gt;0 ,时,; \frac{x}{1+x} &lt; \ln(1+x) &lt; x $$</li>
+<li>$$ x\in(0,\frac{\pi}{2}),时,;\sin{x}&lt;x&lt;\tan{x} $$</li>
+<li>$$ n \to \infty , 时, , \ln ^\alpha n ,&lt;&lt;, n^\beta ,&lt;&lt;, a^n ,&lt;&lt;, n! ,&lt;&lt;, n^n,,(, \alpha &gt; 0,\beta &gt; 0, a &gt; 1,)  $$</li>
+<li>$$ \frac{1}{x+1} &lt; \ln,(1+ \frac{1}{x}) &lt; \frac{1}{x}  $$</li>
+<li>$$ e^x &gt; x + 1 $$</li>
+<li>$$ x-1 &gt; \ln , x $$</li>
+</ul>
+</li>
+<li><p>常用的几个极限</p>
+<ul>
+<li>\( \lim_{x \to 0} \frac{\sin}{x} &#x3D; 1 \)</li>
+<li>\( \lim_{x \to 0} (1+x)^{\frac{1}{x}} &#x3D; e \)</li>
+<li>\( \lim_{n \to +\infty} \sqrt[n]{n} &#x3D; 1 \)</li>
+<li>\( \lim_{n \to +\infty}\sqrt[n]{a} &#x3D; 1 ; (常数 a &gt; 0)\) <br/></li>
+</ul>
+</li>
+<li><p>等价无穷小</p>
+<ul>
+<li><p>\(x \to 0\) 时,</p>
+</li>
+<li><p>\(\sin{x}\backsim x\),&amp;nbsp;&amp;nbsp;\(\tan{x}\backsim x\),&amp;nbsp;&amp;nbsp;\(1-\cos{x} \backsim \frac{1}{2}x^2\),&amp;nbsp;&amp;nbsp;\(\arcsin x \backsim x\),&amp;nbsp;&amp;nbsp;\(\arctan x \backsim x\)</p>
+</li>
+<li><p>\(e^x - 1 \backsim x\)</p>
+</li>
+<li><p>\(\ln({1+x})\backsim x\) &amp;nbsp;&amp;nbsp;注: 此公式还有一种形式 \(u\to1时,; \ln{u}\backsim (u-1)\)</p>
+</li>
+<li><p>\(a^x-1\backsim x\ln a\)</p>
+</li>
+<li><p>\((1+x)^a-1 \backsim ax\)</p>
+</li>
+<li><p>\(x^m + x^k \backsim x^m ; (常数 k &gt; m &gt; 0)\)</p>
+</li>
+<li><p>\(x-\ln{(1+x)} \backsim \frac{1}{2}x^2\)</p>
+</li>
+<li><p>\( x + \sin{x} \backsim 2x \) </p>
+</li>
+<li><p>注:下面四个公式之间可以互相加减，以变换成新的等价代换公式</p>
+</li>
+<li><p>\(x-\sin{x} \backsim \frac{1}{6}x^3\)</p>
+</li>
+<li><p>\(\arcsin{x}-x \backsim \frac{1}{6}x^3\)</p>
+</li>
+<li><p>\(x-\tan{x} \backsim -\frac{1}{3}x^3\)</p>
+</li>
+<li><p>\(\arctan{x}-x \backsim -\frac{1}{3}x^3\)</p>
+ <br/>
+</li>
+<li><p>若 \(\lim{u^v}\)是\(1^{\infty}\) 型极限, 则 \(\lim{u^v}&#x3D;e^A\), 其中 \(A&#x3D;\lim{v(u-1)}\)</p>
+ <br/></li>
+</ul>
+</li>
+<li><p>\(\color{red}{几个常用函数的 x&#x3D;0 处展开的佩亚诺余项公式}\)</p>
+<ul>
+<li>$$e^x&#x3D;1+x+\frac{1}{2!}x^2+\cdots+\frac{1}{n!}x^n+o(x^n)$$</li>
+<li>$$\sin{x}&#x3D;x-\frac{1}{3!}x^3+\cdots+\frac{(-1)^n}{(2n+1)!}x^{2n+1}+o(x^{2n+2})$$</li>
+<li>$$\cos{x}&#x3D;1-\frac{1}{2!}x^2+\cdots+\frac{(-1)^n}{2n!}x^{2n}+o(x^{2n+1})$$</li>
+<li>$$\ln{(1+x)}&#x3D;x-\frac{x^2}{2}+\frac{x^3}{3} - \cdots+(-1)^{n-1}\frac{x^n}{n}+o{(x^n)}$$</li>
+<li>$$(1+x)^m&#x3D;1+mx + \frac{m(m-1)}{2!}x^2 + \cdots + \frac{m(m-1)\cdots(m-n+1)}{n!}x^n + o(x^n)$$</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="微积分部分"><a href="#微积分部分" class="headerlink" title="微积分部分"></a><span id="微积分部分">微积分部分</span></h2><ul>
+<li><p>常用结论</p>
+<ul>
+<li>$$y’’,&#x3D;,\frac{d^2y}{dx^2},&#x3D;,\frac{d}{dx}(\frac{dy}{dx}),&#x3D;,\frac{d}{dt}{\frac{\frac{dy}{dt}}{\frac{dx}{dt}}}\frac{dx}{dt}$$</li>
+<li>$$ (u(x)^{v(x)})^{‘}_x,&#x3D;,u(x)^{v(x)},[,\frac{v(x)}{u(x)},u^{‘}(x)+v^{‘}(x)\ln{u(x)},] $$</li>
+<li>$$\int_{-\infty}^{+\infty}e^{-x^2},dx ,&#x3D;, 2\int _0^{+\infty}e^{-x^2},dx &#x3D; \sqrt{\pi}$$</li>
+<li>$$\int_0^{2\pi}{\cos\theta ,d\theta},&#x3D;,\int_0^{2\pi}\sin\theta,d\theta,&#x3D;,0$$ <br/></li>
+</ul>
+</li>
+<li><p><strong>泰勒公式</strong><br>$$ f(x)&#x3D;f(x_0)+\frac{f^{‘}(x_0)}{1!}(x-x_0)+\frac{f^{‘’}(x_0)}{2!}(x-x_0)^2+ \cdots + \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n + \color{red}{\frac{f^{n+1}(\xi)}{(n+1)!}(x-x_0)^{n+1}},; 其中, \xi \in (x_0,;x)$$<br>$$ f(x) &#x3D; \sum_{n&#x3D;0}^{\infty}, \frac{f^{(n)}(0)}{n!} , x^n $$</p>
+</li>
+<li><p>基本初等函数的导数公式</p>
+<ul>
+<li>$$(a^x)’&#x3D;a^x\ln{a}$$</li>
+<li>$$(\log_ax)’&#x3D;\frac{1}{x\ln{a}},(a&gt;0且a\neq1)$$</li>
+<li>$$(\tan{x})’&#x3D;(\sec{x})^2$$</li>
+<li>$$(\cot{x})’&#x3D;-(\csc{x})^2$$</li>
+<li>$$(\sec{x})’&#x3D;\sec{x}\tan{x}$$</li>
+<li>$$(\csc{x})’&#x3D;- , \csc{x} , \cot{x}$$</li>
+<li>$$(\arcsin{x})’&#x3D;\frac{1}{\sqrt[]{1-x^2}}$$</li>
+<li>$$(\arccos{x})’&#x3D;\frac{-1}{\sqrt[]{1-x^2}}$$</li>
+<li>$$(\arctan{x})’&#x3D;\frac{1}{1+x^2}$$</li>
+<li>$$ [, \ln {(x + \sqrt[]{1+x^2})} ,]’ &#x3D; \frac{1}{\sqrt[]{1+x^2}} $$ <br/></li>
+</ul>
+</li>
+<li><p>\(n阶导数公式;\) $$ (uv)^{(n)} &#x3D; \sum_{k&#x3D;0}^{n}C_n^ku^{(n-k)}v^{(k)}, ; 其中 ; C_n^k &#x3D; \frac{n!}{k!(m-k)!}$$</p>
+<ul>
+<li>$$ (e^{ax})^{(n)} &#x3D; a^n(e^{ax}) $$</li>
+<li>$$ \sin(ax)^{(n)} &#x3D; a^n\sin(\frac{n\pi}{2} + ax) $$</li>
+<li>$$ \cos(ax)^{(n)} &#x3D; a^n\cos(\frac{n\pi}{2} + ax) $$</li>
+<li>$$ {\ln (1+x)}^{(n)}&#x3D; \frac{(-1)^{n-1} (n-1)!}{(1+x)^n} $$</li>
+<li>$$ { (1+x^{\alpha}) }^{(n)} &#x3D; \alpha(\alpha - 1) \cdots  (\alpha - n + 1)(1+x)^{\alpha - n} $$</li>
+<li>$${ \frac{1}{x+a} }^{(n)} &#x3D; (-1)^n \frac{n!}{(x+a)^(n+1)} $$ <br/></li>
+</ul>
+</li>
+<li><p>曲率计算公式</p>
+<ul>
+<li>$$曲率 \quad k &#x3D; \frac{\mid y^{‘’} \mid}{((1+(y^{‘})^2)^{3&#x2F;2} }$$</li>
+<li>$$曲率半径\quad R &#x3D; \frac{1}{k}$$</li>
+</ul>
+</li>
+</ul>
+<br/>
+- 基本积分公式
+   - $$ \int x^a\,dx = \frac{1}{a+1}x^{a+1} + C (a \neq -1) $$
+   - $$ \int a^x\,dx=\frac{a^x}{\ln a} + C(a > 0, a \neq 1) $$
+   - $$ \int \tan{x}\,dx = -\ln{\mid \, \cos{x} \, \mid}+C$$
+   - $$ \int \sec{x}\,dx = \ln{\mid \, \sec{x}+\tan{x} \, \mid}+C$$
+   - $$ \int \cot{x}\,dx = \ln{\mid \, \sin{x} \, \mid}+C$$
+   - $$ \int \csc^2{x}\,dx = -\cot{x}+C$$
+   - $$ \int \ln\,\csc{x}\,dx = \ln{\mid \csc{x} - \tan{x} \mid} = \ln{\mid \tan{\frac{x}{2}} \mid} $$
+   - $$\int \frac{1}{a^2+x^2}\,dx=\frac{1}{a}{\arctan\frac{x}{a}}+C(a \neq 0)$$
+   - $$\int \frac{1}{\sqrt{a^2-x^2}}\,dx=\arcsin \frac{x}{a}+C$$
+   - $$\int \frac{1}{a^2-x^2}\,dx=\frac{1}{2a}\ln \mid  \, \frac{x-a}{x+a}+C \, \mid(a \neq 0)$$
+   - $$\int \frac{1}{\sqrt{x^2 \pm a^2}}\,dx=\ln{\mid \, x+\sqrt{x^2 \pm a^2}+C \, \mid}$$
+   - $$ \int \, \sqrt[]{a^2-x^2} \, dx = \frac{x}{2} \sqrt[]{a^2-x^2} + \frac{a^2}{2} \arcsin \frac{x}{a} $$
+   - $$ \int \, xe^{ax}\, dx = \frac{1}{a^2}(ax-1)e^{ax} $$
+   <br/>
+
+<ul>
+<li><p>定积分的应用</p>
+<ol>
+<li>$$极坐标曲线; r &#x3D; r(\theta); 介于两射线;\theta&#x3D;\alpha;和;\theta&#x3D;\beta,(,0&lt;\beta-\alpha&lt;2\pi,)之间的曲边扇形的面积;$$<br> $$A &#x3D; \frac{1}{2}\int_{\alpha}^{\beta}r^2(\theta),d\theta$$</li>
+<li>$$参数方程曲线;\lbrace_{y&#x3D;y(t)}^{x&#x3D;x(t)},;\alpha\leq t\leq \beta; 的弧长;s&#x3D;\int_{\alpha}^{\beta}\sqrt{x^{‘2}(t)+y^{‘2}(t)},dt$$</li>
+<li>$$直角坐标;y&#x3D;y(x),a\leq x\leq b;的弧长;s&#x3D;\int_{a}^{b}\sqrt{1+y^{‘2}(x)},dx$$</li>
+<li>$$极坐标曲线;r&#x3D;r(\theta),\alpha\leq \theta \leq \beta;的弧长;s&#x3D;\int_{\alpha}^{\beta}\sqrt{r^2(\theta)+r^{‘2}(\theta)},d\theta$$</li>
+<li>$$曲线;y&#x3D;f(x);与;x&#x3D;a,,x&#x3D;b,,x;轴围成的曲边梯形绕;{\color{red}{x}};轴旋转一周所称的旋转体体积$$<br> $$V&#x3D;\pi\int_{a}^{b}f^2(x),dx,;a &lt; b$$</li>
+<li>$$曲线;y&#x3D;f(x);与;x&#x3D;a,,x&#x3D;b,,x;轴围成的曲边梯形绕;{\color{red}{y}};轴旋转一周所称的旋转体体积$$<br> $$V&#x3D;2\pi\int_{a}^{b}xf(x),dx,;a &lt; b$$</li>
+<li>$$在区间;[a,b];上的曲线;y&#x3D;f(x);的弧段绕;x;轴旋转一周所成的旋转曲面面积$$<br> $$ S&#x3D;2\pi\int_{a}^{b}\mid y \mid\sqrt{1+f^{‘2}(x)},dx,,a&lt;b $$<br> $$若该曲线由参数方程 ;x&#x3D;x(t),,y&#x3D;y(t),\alpha \leq t \leq \beta ; 给出, 则只要做类似弧长公式的那种替换即可$$ <br/></li>
+</ol>
+</li>
+<li><p>\( \color{red}{柯西不等式} \)<br>$$设,f(x),与,g(x),在闭区间, [a,, b], 上连续, 则有,[,\int_{a}^{b}f(x)g(x),]^2 \leq,\int_{a}^{b}f^2{(x)},dx , \int_{a}^{b}g^2{(x)},dx$$</p>
+<br/>
+</li>
+<li><p>用定义判断函数可微<br>$$\lim_{\Delta x \to 0,, \Delta y \to 0}\frac{[, f(x_0+\Delta x,, y_0 + \Delta y)-f(x_0,,y_0) ,]-[, f^{‘}_x(x_0,, y_0)\Delta x + f^{‘}_y(x_0,,y_0)\Delta y ,]}{\rho}&#x3D;0,,其中, \rho &#x3D; \sqrt{(\Delta x)^2 + (\Delta y)^2}$$</p>
+<br>
+</li>
+<li><p>\( \color{red}{几个常用的麦克劳林展开式} \)</p>
+<ul>
+<li>$$\frac{1}{1-x}&#x3D;1+x+x^2+\cdots+x^n+\cdots &#x3D; \sum_{n&#x3D;0}^{\infty},x^n , ,x \in (-1,1)$$</li>
+<li>$$\frac{1}{1+x}&#x3D;1-x+x^2+\cdots+(-1)^n , x^n+\cdots &#x3D; \sum_{n&#x3D;0}^{\infty},(-1)^n,x^n , ,x \in (-1,1)$$ <br></li>
+</ul>
+</li>
+<li><p>\( \color{red}{格林公式} \)</p>
+<ul>
+<li>$$ 设闭区域 D 由分段光滑曲线 L 围成, P(x, y) 及 Q(x,y)在 D 上有连续一阶偏导数,则$$<br> $$ \oint_L , Pdx + Qdy &#x3D; \iint_D(,\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y},),dxdy,$$<br> $$其中 L 是 D 的取正向的边界曲线.(L 的正向是指有人沿着 L 的某一方向前进时, 区域 D 始终在他左侧)$$</li>
+</ul>
+</li>
+</ul>
+<br>
+
+<ul>
+<li>\( \color{red}{斯托克斯公式} \)<ul>
+<li>$$ 设 \Gamma 为分段光滑曲线的空间有向闭曲线, \Sigma 是以 \Gamma 为边界的分段光滑有向曲面, $$<br> $$ \Gamma 的方向与 \Sigma 符合右手法则, P,Q,R 在 \Sigma 上有连续一阶偏导数, 则 $$<br> $$ \oint_\Gamma , Pdx + Qdy + Rdz &#x3D; \iint_\Sigma , (, \frac{\partial R}{\partial y} - \frac{\partial Q}{\partial z},),dydz  + (, \frac{\partial P}{\partial z} - \frac{\partial R}{\partial x}),dzdx + (, \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y},),dxdy $$</li>
+</ul>
+</li>
+</ul>
+<br>
+
+<ul>
+<li>高斯公式<ul>
+<li>$$ 设空间闭区域 \Omega 是由分片光滑的闭曲面 \Sigma 所围成,$$<br> $$函数 P(x,y,z), Q(x,y,z), R(x,y,z) 在 \Omega 上有一阶连续偏导数, 闭曲面 \Sigma 取外侧, 则$$<br> $$ \iint_\Sigma , P ,dydz + Q ,dzdx + R ,dxdy &#x3D; \iiint_\Omega(, \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z} ,), dV $$</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 上述公式或者结论在高数复习的过程中无所不在。所以，这些公式、结论也都是我们必须得记会的。事实上，文中所记载的这些公式并不齐全，我只是将比较常用的几个贴了上来。此外，至于 “向量代数与空间解析几何” 和 “常微分方程” 这两部分，我并没有给出任何公式或是结论————这两章的内容不能说简单，但是与它们有关的公式不多，多做几个题目，基本就记住啦。<br><br></p>
+<p>推荐阅读: <a target="_blank" rel="noopener" href="https://jiaqiangwu.top/2019/03/29/%E9%AB%98%E6%95%B0%E5%BF%85%E8%AE%B0%E7%9A%84%E5%87%BD%E6%95%B0%E5%9B%BE%E5%83%8F/">高数必记的五个函数图像</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>支持我续费域名吧~</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Jiaqiang Wu WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jiaqiang Wu Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%AB%98%E6%95%B0/" rel="tag"># 高数</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/20/%E5%A4%84%E7%90%86%E6%9C%BA%E4%B8%8ECPU/" rel="prev" title="处理机与CPU">
+                  <i class="fa fa-chevron-left"></i> 处理机与CPU
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/28/%E9%AB%98%E6%95%B0%E5%BF%85%E8%AE%B0%E7%9A%84%E5%87%BD%E6%95%B0%E5%9B%BE%E5%83%8F/" rel="next" title="高数必记的函数图像">
+                  高数必记的函数图像 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiaqiang Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"jiaqiangwu","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

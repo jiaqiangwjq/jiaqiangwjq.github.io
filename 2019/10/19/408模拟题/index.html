@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这篇博客中的题目，大多为选择题，且都来源于各路不知名模拟题，仅供补充知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="408模拟题">
+<meta property="og:url" content="http://example.com/2019/10/19/408%E6%A8%A1%E6%8B%9F%E9%A2%98/index.html">
+<meta property="og:site_name" content="Jiaqiang&#39;s Blog">
+<meta property="og:description" content="这篇博客中的题目，大多为选择题，且都来源于各路不知名模拟题，仅供补充知识。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-10-19T15:31:03.000Z">
+<meta property="article:modified_time" content="2019-10-22T15:31:18.794Z">
+<meta property="article:author" content="Jiaqiang Wu">
+<meta property="article:tag" content="408计算机基础综合">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2019/10/19/408%E6%A8%A1%E6%8B%9F%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/10/19/408%E6%A8%A1%E6%8B%9F%E9%A2%98/","path":"2019/10/19/408模拟题/","title":"408模拟题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>408模拟题 | Jiaqiang's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jiaqiang's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日拱一卒，功不唐捐</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiaqiang Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiaqiangwjq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiaqiangwjq" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jiaqiangwjq@gmail.com" title="E-Mail → mailto:jiaqiangwjq@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/10/19/408%E6%A8%A1%E6%8B%9F%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiaqiang Wu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="408模拟题 | Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          408模拟题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-10-19 23:31:03" itemprop="dateCreated datePublished" datetime="2019-10-19T23:31:03+08:00">2019-10-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2019-10-22 23:31:18" itemprop="dateModified" datetime="2019-10-22T23:31:18+08:00">2019-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/10/19/408%E6%A8%A1%E6%8B%9F%E9%A2%98/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/19/408模拟题/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这篇博客中的题目，大多为选择题，且都来源于各路不知名模拟题，仅供补充知识。</p>
+<span id="more"></span>
+<ol>
+<li><p>根据<strong>使用方式</strong>，可将缓冲区设置成 ()<br>A. 专用缓冲区和特殊缓冲区 &amp;emsp;&amp;emsp; B. 单缓冲区和多缓冲区<br>C. 专用缓冲区和通用缓冲区 &amp;emsp;&amp;emsp; D. 多缓冲区和缓冲池</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>C</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>按<b>使用方式</b>，可将缓冲区设置成专用缓冲区和通用缓冲区；按<b>组织方式</b>，则又可分为单缓冲区、多缓冲区以及缓冲池。</text></details>
+<br>
+</li>
+<li><p>一个计算机系统配置有 2 台绘图机，3 台打印机。为了正确驱动这些设备，系统应该提供的<strong>设备驱动程序</strong>的数量是 ()<br>A. 5 &amp;emsp;&amp;emsp; B. 3 &amp;emsp;&amp;emsp; C. 2 &amp;emsp;&amp;emsp; D. 1</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>C</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>因为系统只要按设备类型配置设备驱动程序即可，与设备的数量无关。</text></details>
+<br>
+</li>
+<li><p>一个用于发送二进制信号的 3kHz 信道，其信噪比为 20dB，则可以获得的最大数据速率是 ()<br>A. 6kbps &amp;emsp;&amp;emsp; B. 6.66kps &amp;emsp;&amp;emsp; C. 19.98kps &amp;emsp;&amp;emsp; D. 20kps</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>A</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>计算可得，香农极限是 19.98kps，奈奎斯特极限是 6kps，因为瓶颈是奈奎斯特极限，故最大数据速率是 6kps。</text></details>
+<br>
+</li>
+<li><p>一个进程被唤醒意味着 ()<br>A. 该进程马上占有 CPU &amp;emsp;&amp;emsp; B. 进程状态变为就绪态<br>C. 进程的优先权变为最大 &amp;emsp;&amp;emsp; D. 其 PCB 移至就绪队列队首</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>B</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>进程占有 CPU 是处于运行态。进程被唤醒，是指当进程需等待的事件发生时，进程会由挂起或阻塞态转变为就绪态，根据相应的调度算法插入到就绪队列的相应位置，不一定插在队首，进程的优先权可能会发生变化，也可能不会。</text></details>
+<br>
+</li>
+<li><p>以下不可能引起进程调度的是 ()<br>A. 一个进程完成工作后被撤销 &amp;emsp;&amp;emsp; B. 一个进程从就绪态变成了运行状态<br>C. 一个进程从等待状态变成了就绪态 &amp;emsp;&amp;emsp; D. 一个进程从运行态变成了等待状态或就绪态</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>B</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>进程从就绪态变成了运行态，是一次进程调度完成的情况，当然不可能再引起进程调度。</text></details>
+<br>
+</li>
+<li><p>主存的管理方案不同时，对主存储器的访问 ()<br>A. 对于段式或页式管理，以页或段为单位 &amp;emsp;&amp;emsp; B. 以字或字节为单位<br>C. 随存储器的管理方案不同而异 &amp;emsp;&amp;emsp; D. 以用户定义的逻辑记录为单位</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>B</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>对主存的访问不管采用什么管理方案，最终都要转换成访问主存的字或字节地址。</text></details>
+<br>
+</li>
+<li><p>在文件系统中文件的不同物理结构有不同的优缺点。在下列文件的物理结构中，() 具有直接读写任意一个记录的能力，又提高了文件存储空间的利用率。<br>A. 顺序结构 &amp;emsp;&amp;emsp; B. 链接结构 &amp;emsp;&amp;emsp; C. Hash 结构 &amp;emsp;&amp;emsp; D. 索引结构</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>D</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>索引是一个单独的、物理的数据结构，它是某个表中一列或若干列值的集合和相应的指向表中物理标识这些值的数据页的逻辑指针清单。它可以直接读写任意一个记录。</text></details>
+<br>
+</li>
+<li><p>设有 10000 个无序记录，希望用最快速度从中选择前 10 个关键字最小的记录，采用哪种排序方法最好 ()<br>A. 直接插入排序 &amp;emsp;&amp;emsp; B. 简单选择排序 &amp;emsp;&amp;emsp; C. 快速排序 &amp;emsp;&amp;emsp; D. 希尔排序 </p>
+<details><summary>【<font color=red>答案</font>】</summary><text>B</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>在所列出的排序方法中，直接插入、快速、希尔排序都是排序完成后，才能选出前 10 个关键字最小的记录。只有简单选择排序能直接选出前 10 个关键字最小的记录。</text></details>
+<br>
+</li>
+<li><p>关于计算机字长下面说法错误的是 ()<br>A. 表示该计算机能够存储的最大二进制位数<br>B. 表示该计算机的 CPU 可以同时处理的二进制位数<br>C. 机器字长一般与 CPU 中寄存器的位数有关<br>D. 机器字长决定了数的表示范围和表示精度</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>A</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>计算机字长是指 CPU 一次能处理的数据长度，它通常与 CPU 中的寄存器的位数相等，决定了机器所能表示数据的范围和精度。计算机通过多次操作，可以存储长度远大于字长的二进制数据，也有些寄存器的位数会大于字长，如 x86 中的段基址寄存器。</text></details>
+<br>
+</li>
+<li><p>某一 RAM 芯片，其容量为 128k x 16位，除电源和接地端外，该芯片引出线的最少数目是 ()<br>A. 33 &amp;emsp;&amp;emsp; B. 35 &amp;emsp;&amp;emsp; C. 25 &amp;emsp;&amp;emsp; D. 26</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>B</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>128k x 16位的存储器，数据线为 16 根，按字寻址的范围是 2^17，按字节寻址的范围是 2^19，地址线为 19 根。所以芯片引出线的最少数目是 16+19=35。</text></details>
+<br>
+</li>
+<li><p>以下四种类型指令中，执行时间最长的是 ()<br>A. RR 型指令 &amp;emsp;&amp;emsp; B. RS 型指令 &amp;emsp;&amp;emsp; C. SS 型指令 &amp;emsp;&amp;emsp; D. 程序控制指令</p>
+<details><summary>【<font color=red>答案</font>】</summary><text>C</text></details>
+<details><summary>【<font color=green>解析</font>】</summary><text>RR 型指令是在寄存器之间进行操作，速度比较快；RS 型指令是在寄存器和主存单元间进行操作；SS 型指令是在主存单元之间进行操作。程序控制指令相当于 RR 型指令或 RS 型指令。</text></details>
+<br></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>支持我续费域名吧~</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Jiaqiang Wu WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jiaqiang Wu Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/408%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%BB%BC%E5%90%88/" rel="tag"># 408计算机基础综合</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/11/%E5%BE%AE%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E7%9A%84%E5%88%86%E6%9E%90/" rel="prev" title="微操作命令的分析">
+                  <i class="fa fa-chevron-left"></i> 微操作命令的分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/10/21/%E4%BD%9C%E6%96%87%E5%A4%A9%E5%A4%A9%E7%BB%83/" rel="next" title="作文天天练">
+                  作文天天练 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiaqiang Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"jiaqiangwu","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

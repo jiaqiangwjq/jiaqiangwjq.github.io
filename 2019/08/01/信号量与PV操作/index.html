@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="处理进程同步和互斥的问题，用的最多的是信号量机制。它只能被两个标准的原语 wait(s) 和 signal(s) 访问，也可记为 P(s) 和 V(s)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信号量与PV操作">
+<meta property="og:url" content="http://example.com/2019/08/01/%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%8EPV%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Jiaqiang&#39;s Blog">
+<meta property="og:description" content="处理进程同步和互斥的问题，用的最多的是信号量机制。它只能被两个标准的原语 wait(s) 和 signal(s) 访问，也可记为 P(s) 和 V(s)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2019/07/30/5d4069317a00374703.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/31/5d4074833daef40097.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/31/5d41b99547abc91998.png">
+<meta property="article:published_time" content="2019-08-01T15:26:07.000Z">
+<meta property="article:modified_time" content="2020-05-06T08:46:33.341Z">
+<meta property="article:author" content="Jiaqiang Wu">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/07/30/5d4069317a00374703.png">
+
+
+<link rel="canonical" href="http://example.com/2019/08/01/%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%8EPV%E6%93%8D%E4%BD%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/08/01/%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%8EPV%E6%93%8D%E4%BD%9C/","path":"2019/08/01/信号量与PV操作/","title":"信号量与PV操作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>信号量与PV操作 | Jiaqiang's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jiaqiang's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日拱一卒，功不唐捐</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%9D%A5%E8%BF%9B%E8%A1%8C%E4%BA%92%E6%96%A5"><span class="nav-number">1.</span> <span class="nav-text">用信号量来进行互斥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%9D%A5%E8%B0%83%E5%BA%A6%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">用信号量来调度共享资源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">生产者-消费者问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">读者-写者问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%AF%BB%E8%80%85%E4%BC%98%E5%85%88"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 读者优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%86%99%E8%80%85%E4%BC%98%E5%85%88"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 写者优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%AF%BB%E5%86%99%E5%85%AC%E5%B9%B3"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 读写公平</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">哲学家就餐问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9D%A1%E7%9C%A0%E7%90%86%E5%8F%91%E5%B8%88%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">睡眠理发师问题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiaqiang Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiaqiangwjq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiaqiangwjq" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jiaqiangwjq@gmail.com" title="E-Mail → mailto:jiaqiangwjq@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/08/01/%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%8EPV%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiaqiang Wu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="信号量与PV操作 | Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信号量与PV操作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-01 23:26:07" itemprop="dateCreated datePublished" datetime="2019-08-01T23:26:07+08:00">2019-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-05-06 16:46:33" itemprop="dateModified" datetime="2020-05-06T16:46:33+08:00">2020-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/08/01/%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%8EPV%E6%93%8D%E4%BD%9C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/01/信号量与PV操作/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>处理进程同步和互斥的问题，用的最多的是信号量机制。它只能被两个标准的原语 wait(s) 和 signal(s) 访问，也可记为 P(s) 和 V(s)</p>
+<span id="more"></span>
+
+<ul>
+<li><p>P(s): 如果 s 是非零的，那么 P 将 s 减 1，并且立即返回。如果 s 为 0，那么就立即挂起这个线程，直到 s 变为非 0，而一个 V 操作会重启这个线程。在重启之后，P 操作将 s 减 1，并将控制返回给调用者。</p>
+</li>
+<li><p>V(s): V 操作将 s 加 1。如果有任何线程阻塞在 P 操作等待 s 变成非零，那么 V 操作会重启这些线程中的一个，然后该线程将 s 减 1，完成它的 P 操作。</p>
+</li>
+</ul>
+<hr>
+<h2 id="用信号量来进行互斥"><a href="#用信号量来进行互斥" class="headerlink" title="用信号量来进行互斥"></a>用信号量来进行互斥</h2><p>程序中经常会有一些 <strong>共享变量</strong>，而它往往会引入同步错误。如下所示 <font color= green>test.c</font>，它创建了两个线程，每个线程都对共享计数变量 <strong>cnt</strong> 加 1。因为每个线程都对计数器增加了 <strong>n</strong> 次，所以 <strong>cnt</strong> 的预计值应该是 <strong>2n</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//test.c</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *<span class="title function_">thread</span><span class="params">(<span class="type">void</span> *var)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 全局共享变量 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">long</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">long</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 创建两个线程 */</span></span><br><span class="line">    <span class="type">pthread_t</span> tid1, tid2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 获取数字参数 */</span></span><br><span class="line">    n = atoi(argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 线程跑起来啦 */</span></span><br><span class="line">    pthread_create(&amp;tid1, <span class="literal">NULL</span>, thread, &amp;n);</span><br><span class="line">    pthread_create(&amp;tid2, <span class="literal">NULL</span>, thread, &amp;n);</span><br><span class="line">    pthread_join(tid1, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(tid2, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 输出结果 */</span></span><br><span class="line">    <span class="keyword">if</span> (cnt != (<span class="number">2</span> * n))</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Failed! cnt = %d\n&quot;</span>, cnt);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Success! cnt = %d\n&quot;</span>, cnt);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 线程函数 */</span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">thread</span><span class="params">(<span class="type">void</span> *var)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">long</span> i, n = *((<span class="type">long</span> *)var);</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">        cnt += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而，当我们实际运行该程序时，不仅答案错误，而且每次得到的答案都不同！<br>如下图所示:<br><img src="https://i.loli.net/2019/07/30/5d4069317a00374703.png" alt="运行结果">实际上，我们无法预测操作系统是否为这两个线程选择一个正确的顺序。在这个实例中，这两个线程就很可能是交叉运行的，所以最终输出的 cnt 值不是我们所期望的。</p>
+<p>信号量提供了一种很方便的方法来确保对共享变量的互斥访问。基本思想是将每个共享变量与一个信号量 s(初值为 1)联系起来，然后用 P(s) 和 V(s) 操作将相应的临界区包围起来。<br>以这种方式来保护共享变量的信号量叫做 <strong>二元信号量</strong>，因为它的值总是 0 和 1。一个被用作一组可用资源的计数器的信号量被称为 <strong>计数信号量</strong>。<br>如下所示:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 信号量 mutex = 1 */</span></span><br><span class="line"><span class="type">sem_t</span> mutex;</span><br><span class="line">sem_init(&amp;mutex, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    sem_wait(&amp;mutex);        <span class="comment">/* 相当于 P(mutex) */</span></span><br><span class="line">    cnt += <span class="number">1</span>;</span><br><span class="line">    sem_post(&amp;mutex);        <span class="comment">/* 相当于 V(mutex) */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当我们再次运行这个程序时，它就可以每次都能产生正确的结果了。<br><img src="https://i.loli.net/2019/07/31/5d4074833daef40097.png" alt="成功"></p>
+<hr>
+<h2 id="用信号量来调度共享资源"><a href="#用信号量来调度共享资源" class="headerlink" title="用信号量来调度共享资源"></a>用信号量来调度共享资源</h2><h3 id="生产者-消费者问题"><a href="#生产者-消费者问题" class="headerlink" title="生产者-消费者问题"></a><strong>生产者-消费者问题</strong></h3><p>生产者和消费者线程共享一个大小为 n 的缓冲区。生产者线程反复地生产新的项目，并把它们放入缓冲区中。消费者线程不断地从缓冲区中取出这些项目，然后消费它们。</p>
+<p><strong>问题分析</strong>：因为放入和取出项目都涉及更新共享变量，所以我们必须保证对缓冲区的访问是互斥的。但是只保证互斥访问是不够的，我们还需要调度对缓冲区的访问。如果缓冲区是满的，那么生产者必须等待直到有一个空位可用；如果缓冲区是空的，那么消费者必须等待直到有一个项目可供消费。<br>伪代码描述如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* empty 为缓冲区的空位数, full 为可用项目数 */</span></span><br><span class="line">semaphore mutex = <span class="number">1</span>, empty = n, full = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">producer() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(empty);	<span class="comment">/* 看缓冲区中有空位没 */</span></span><br><span class="line">    P(mutex);</span><br><span class="line">    放入项目;</span><br><span class="line">    V(mutex);</span><br><span class="line">    V(full);	<span class="comment">/* 缓冲区中的项目数加 1 */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">consumer() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(full);	<span class="comment">/* 看缓冲区中有项目没 */</span></span><br><span class="line">    P(mutex);</span><br><span class="line">    取出项目;</span><br><span class="line">    V(mutex);</span><br><span class="line">    V(empty);	<span class="comment">/* 缓冲区的空位数加 1 */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：这里每次对 empty 和 full 变量的 P 操作一定要放在对 mutex 的 P 操作之前，而这里的 V 操作没有先后顺序的问题。原因很显然，如果先 P(mutex) 的话，只要 empty 或 full 为 0，那么程序就极有可能发生死锁。</p>
+<h3 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a><strong>读者-写者问题</strong></h3><h4 id="1-读者优先"><a href="#1-读者优先" class="headerlink" title="1. 读者优先"></a>1. 读者优先</h4><p>一个数据对象(例如一个文件或记录)若被多个并发进程共享，其中读者进程只需要读该数据对象的内容，写者进程则需要修改其内容。<br>多个读者可以同时访问这个共享数据对象，但是，如果一个写者和任何一个其他的读者或写者同时访问这个数据对象，就有可能导致不确定的访问结果。<br>要求:</p>
+<ul>
+<li>允许多个读者进程同时读文件</li>
+<li>只允许一个写者进程写文件</li>
+<li>任何一个写者进程在完成写操作之前不允许其他读者或写者工作</li>
+<li>写者执行写操作前，应等待已有的写者或读者全部退出</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*  </span></span><br><span class="line"><span class="comment">* count 为读者数量,</span></span><br><span class="line"><span class="comment">* rw 为访问文件的互斥信号量</span></span><br><span class="line"><span class="comment">* mutex 为更新 count 的互斥信号量 </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">semaphore mutex = <span class="number">1</span>, rw = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">writer() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(rw);	</span><br><span class="line">    写作;</span><br><span class="line">    V(rw);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reader() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(mutex);</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">        P(rw);		  <span class="comment">/* 一旦有读者，就阻止写者进入 */</span></span><br><span class="line">    count++;</span><br><span class="line">    V(mutex);</span><br><span class="line">    阅读;</span><br><span class="line">    P(mutex);</span><br><span class="line">    count--;	       <span class="comment">/* 阅读结束，读者离开 */</span></span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)        <span class="comment">/* count = 0 说明读者全部退出了 */</span></span><br><span class="line">        V(rw);	     <span class="comment">/* 现在可以让给写者写了 */</span></span><br><span class="line">    V(mutex);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实从上面的代码中，我们也能看出 <strong>读者是优先</strong> 的。由于允许多个读者同时进行读操作，在有读者的情况下，假设一个写者到来，因为读者进程还未释放信号量 rw, 所以写者不能访问文件。这样，只要有一个读者还在读文件，随后而来的读者都被允许访问文件，而写者将一直被挂起直到所有读者退出为止。这会使写者发生饥饿现象。</p>
+<h4 id="2-写者优先"><a href="#2-写者优先" class="headerlink" title="2. 写者优先"></a>2. 写者优先</h4><p>当有读进程正在读文件时，若有写进程请求访问，这时应禁止后续读者进程的请求，等到已在共享文件中的读进程执行完毕，立即让给写进程执行，只有在无写进程的情况下才允许读进程再次执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* reader_count 为读者数量</span></span><br><span class="line"><span class="comment">* writer_count 为写者数量</span></span><br><span class="line"><span class="comment">* mutex_rc 为更新 reader_count 的互斥信号量</span></span><br><span class="line"><span class="comment">* mutex_wc 为更新 writer_count 的互斥信号量</span></span><br><span class="line"><span class="comment">* wr 读者进程在此排队</span></span><br><span class="line"><span class="comment">* wsem 为写者互斥信号量</span></span><br><span class="line"><span class="comment">* rsem 为读者 &quot;互斥&quot; 信号量</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">semaphore mutex_rc = <span class="number">1</span>, mutex_wc = <span class="number">1</span>, wr = <span class="number">1</span>, wsem = <span class="number">1</span>, rsem = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> reader_count = <span class="number">0</span>, writer_count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">writer() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(mutex_wc);</span><br><span class="line">    writer_count++;</span><br><span class="line">    <span class="keyword">if</span> (writer == <span class="number">1</span>)         <span class="comment">/* 实现写者优先 */</span></span><br><span class="line">        P(rsem);           <span class="comment">/* 直接抢占 rsem, 此时还有读者在 wr 上排队呢 */</span></span><br><span class="line">    V(mutex_wc);</span><br><span class="line">    P(wsem);</span><br><span class="line">    写文件;</span><br><span class="line">    V(wsem);</span><br><span class="line">    P(mutex_wc);</span><br><span class="line">    writer_count--;</span><br><span class="line">    <span class="keyword">if</span> (writer_count == <span class="number">0</span>)</span><br><span class="line">        V(rsem);        <span class="comment">/* 写者退出，读者才可进入 */</span>      </span><br><span class="line">    V(mutex_wc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reader() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(wr);</span><br><span class="line">    P(rsem);            <span class="comment">/* 让其他读者先在 wr 上排队 */</span></span><br><span class="line">    P(mutex_rc);</span><br><span class="line">    reader_count++;</span><br><span class="line">    <span class="keyword">if</span> (reader_count == <span class="number">1</span>)</span><br><span class="line">        P(wsem);      <span class="comment">/* 只要有读者，就阻塞写者进程 */</span></span><br><span class="line">    V(mutex_rc);</span><br><span class="line">    V(rsem);         <span class="comment">/* 先释放的是 rsem */</span> </span><br><span class="line">    V(wr);          <span class="comment">/* 允许其他读者进程进入 */</span></span><br><span class="line">    读文件;</span><br><span class="line">    P(mutex_rc);</span><br><span class="line">    reader_count--;</span><br><span class="line">    <span class="keyword">if</span> (reader_count == <span class="number">0</span>)</span><br><span class="line">        V(wsem);  <span class="comment">/* 读者退出，写者才可进入 */</span></span><br><span class="line">    V(mutex_rc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-读写公平"><a href="#3-读写公平" class="headerlink" title="3. 读写公平"></a>3. 读写公平</h4><p>读写进程有着相同的优先级。当一个写进程写文件时，若先有一些读进程要求访问文件，后有另一个写进程要求写文件，则当前写进程结束时，会是一个读进程而不是写进程占用文件。(这也是王道书本上所给出的方法)<br>代码简单易懂，我就不多写注释了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* count 为读者数量</span></span><br><span class="line"><span class="comment">* rw 为访问文件的互斥信号量</span></span><br><span class="line"><span class="comment">* mutex 为更新 count 的互斥信号量</span></span><br><span class="line"><span class="comment">* w 让读进程和写进程在此排队</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">semaphore rw = <span class="number">1</span>, mutex = <span class="number">1</span>, w = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> count = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">writer() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(w);        <span class="comment">/* 在无读写进程请求时进入 */</span></span><br><span class="line">    P(rw);</span><br><span class="line">    写文件;</span><br><span class="line">    V(rw);</span><br><span class="line">    V(w);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reader() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        P(w);        <span class="comment">/* 在无读写进程请求时进入 */</span></span><br><span class="line">        P(mutex);</span><br><span class="line">        <span class="keyword">if</span>(count == <span class="number">0</span>)</span><br><span class="line">            P(rw);</span><br><span class="line">        count++;</span><br><span class="line">        V(mutex);</span><br><span class="line">    读文件;</span><br><span class="line">    P(mutex);</span><br><span class="line">    count--;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">        V(rw);</span><br><span class="line">    V(mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如书本上所说，大部分练习题和真题用消费者-生产者模型或读者-写者问题就能解决，但对于下述的这些问题也要熟悉。毕竟，<strong>考研复习的关键在于反复多次和全面</strong>。</p>
+<h3 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h3><p>有 5 个哲学家围坐在一圆桌旁，桌中央有一盘通心，每人面前有一只空盘子，每两个人之间放一只筷子。为了吃面，每个哲学家必须拿到两只筷子，并且每个人只能直接从自己的左手边和右手边取筷子。<br>如下图所示：</p>
+<p><img src="https://i.loli.net/2019/07/31/5d41b99547abc91998.png" alt="哲学家就餐问题"></p>
+<p>分析：哲学家只有拿到两根筷子才可以进餐，进餐完毕后，放下筷子。定义互斥信号量数组   <code>chopstick[5] = &#123;1, 1, 1, 1, 1&#125;</code> 用于对 5 个筷子的互斥访问。哲学家按顺序编号为 0~4，哲学家 i 左边筷子的编号为 i, 右边筷子的编号为 (i+1)%5。当一名哲学家左右两边的筷子都可用时，才允许他拿起筷子。<br>代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* mutex 为取筷子的互斥信号量</span></span><br><span class="line"><span class="comment">* chopstick[i] 为对筷子的互斥访问信号量</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">semaphore mutex = <span class="number">1</span>;</span><br><span class="line">semaphore chopstick[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>&#125;;</span><br><span class="line"></span><br><span class="line">Pi() &#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        P(mutex);</span><br><span class="line">        P(chopstick[i]);</span><br><span class="line">        P(chopstick[(i+<span class="number">1</span>)%<span class="number">5</span>]);</span><br><span class="line">        V(mutex);</span><br><span class="line">        吃面;</span><br><span class="line">        V(chopstick[i]);</span><br><span class="line">        V(chopstick[(i+<span class="number">1</span>)%<span class="number">5</span>]);</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><font color="red">疑问:</font> 这里，我有一个小小的疑问——为什么要用 <code>do-while</code> 呢？我参考了课本教材以及《现代操作系统》这两本书，书上的确都是这么用的，但是却没给出使用它的理由。按理说，在上面的伪代码中直接使用 <code>while</code> 也没问题啊！很奇怪！</p>
+<h3 id="睡眠理发师问题"><a href="#睡眠理发师问题" class="headerlink" title="睡眠理发师问题"></a>睡眠理发师问题</h3><p>理发店里有一个理发师，一把理发专用椅子， N 个供等候顾客休息的椅子。若无顾客，理发师则睡眠。顾客到来时唤醒理发师，若理发师正在理发，新来的顾客坐在空闲的休息椅上等候；若没有可供休息的椅子，顾客离开。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* wait_count 为等待理发的顾客数</span></span><br><span class="line"><span class="comment">* customer 表示等待理发的顾客, 可以用来阻塞理发师进程</span></span><br><span class="line"><span class="comment">* baber 表示等待顾客的理发师, 可以用来阻塞顾客进程</span></span><br><span class="line"><span class="comment">* mutex 为更新 wait_count 的互斥信号量</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">semaphore custmoer = <span class="number">0</span>, baber = <span class="number">0</span>, mutex = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> wait_count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">baber()&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    P(custmoer);    <span class="comment">/* 看有没有顾客 */</span></span><br><span class="line">    P(mutex);</span><br><span class="line">    wait_count--;</span><br><span class="line">    V(mutex);</span><br><span class="line">    给顾客理发;</span><br><span class="line">    V(baber);     <span class="comment">/* 理发结束, 释放理发师 */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">custmoer()&#123;</span><br><span class="line">    P(mutex);</span><br><span class="line">    <span class="keyword">if</span> (wait_count &lt; N) &#123;    <span class="comment">/* 看还有没有空椅子 */</span></span><br><span class="line">    wait_count++;        </span><br><span class="line">    V(mutex);</span><br><span class="line">    V(custmoer);      <span class="comment">/* 顾客在 custmoer 上等待理发 */</span></span><br><span class="line">    P(baber);</span><br><span class="line">    接受理发;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        V(mutex);       <span class="comment">/* 没空椅子了, 顾客离开 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>还有最后一个<strong>吸烟者问题</strong>，不过我觉得它和书本上那个 “往一个盘子里放苹果和橘子” 的问题很像，都挺简单的，这里就不多赘述了。<br><br></p>
+<p>推荐阅读: <a target="_blank" rel="noopener" href="https://jiaqiangwu.top/2019/08/01/PV%E6%93%8D%E4%BD%9C%E7%9C%9F%E9%A2%98%E6%BC%94%E7%BB%83/#.XUMFUKECIv8.link">PV操作真题演练</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>支持我续费域名吧~</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Jiaqiang Wu WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jiaqiang Wu Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/28/%E9%AB%98%E6%95%B0%E5%BF%85%E8%AE%B0%E7%9A%84%E5%87%BD%E6%95%B0%E5%9B%BE%E5%83%8F/" rel="prev" title="高数必记的函数图像">
+                  <i class="fa fa-chevron-left"></i> 高数必记的函数图像
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/07/Web%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E5%8E%86%E7%A8%8B/" rel="next" title="Web页请求的历程">
+                  Web页请求的历程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiaqiang Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"jiaqiangwu","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

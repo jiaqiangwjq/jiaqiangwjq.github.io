@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在 Linux 下写 C 语言程序，不会 gdb 可不行，这篇文章就来教大家我自己如何使用 gdb 来调试 C 程序。后期还会再写一篇关于 gcc 的命令参数的文章，那就比较简单了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用gdb调试程序">
+<meta property="og:url" content="http://example.com/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Jiaqiang&#39;s Blog">
+<meta property="og:description" content="在 Linux 下写 C 语言程序，不会 gdb 可不行，这篇文章就来教大家我自己如何使用 gdb 来调试 C 程序。后期还会再写一篇关于 gcc 的命令参数的文章，那就比较简单了。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/QibMoPzRnDZm2XB.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/26/5d132132c538479358.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/26/5d1321430f88455084.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/9oy4vx3mjuwa68s.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/QqvHSTRGBaDIx7y.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/wYA7h65MZFjB8WG.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/P2rybh4JmodtTaO.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/OfTNZFDz3mtMelV.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/r5sIBKVZbR2qm7U.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/6C4MazeqgXtJpGZ.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/KwHXCBRmhlsQzIL.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/w6ViNqD5C7LoW1O.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/DHcdqRCh4sSZ7ov.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/CDec4uthpoX1lyj.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/BJZhyImTEYc1XW2.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/gCjzKn9aEYAywXp.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/EpBc54DzLCOKymF.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/746tCaVX2WsxrPd.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/k8YCWrSgaiUm9HR.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/fNUQXGHI18jzBhw.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/20/IytoqrbgJGwjW6d.png">
+<meta property="article:published_time" content="2019-06-20T07:16:11.000Z">
+<meta property="article:modified_time" content="2020-12-20T03:49:19.096Z">
+<meta property="article:author" content="Jiaqiang Wu">
+<meta property="article:tag" content="gdb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/12/20/QibMoPzRnDZm2XB.png">
+
+
+<link rel="canonical" href="http://example.com/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/","path":"2019/06/20/使用gdb调试程序/","title":"使用gdb调试程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用gdb调试程序 | Jiaqiang's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jiaqiang's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日拱一卒，功不唐捐</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-gdb"><span class="nav-number">2.</span> <span class="nav-text">运行 gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E4%BC%9A%E8%AF%9D%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">调试会话示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%AD%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">使用断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AD%E7%82%B9%E5%92%8C%E8%A7%82%E5%AF%9F%E7%82%B9"><span class="nav-number">5.</span> <span class="nav-text">断点和观察点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%AD%E7%82%B9-1"><span class="nav-number">5.1.</span> <span class="nav-text">使用断点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%82%E5%AF%9F%E7%82%B9"><span class="nav-number">5.2.</span> <span class="nav-text">使用观察点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E8%B7%9F%E8%B8%AA"><span class="nav-number">6.</span> <span class="nav-text">堆栈跟踪</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiaqiang Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiaqiangwjq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiaqiangwjq" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jiaqiangwjq@gmail.com" title="E-Mail → mailto:jiaqiangwjq@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiaqiang Wu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用gdb调试程序 | Jiaqiang's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用gdb调试程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-20 15:16:11" itemprop="dateCreated datePublished" datetime="2019-06-20T15:16:11+08:00">2019-06-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-12-20 11:49:19" itemprop="dateModified" datetime="2020-12-20T11:49:19+08:00">2020-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">工具使用</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/06/20/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/06/20/使用gdb调试程序/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在 Linux 下写 C 语言程序，不会 gdb 可不行，这篇文章就来教<s>大家</s>我自己如何使用 gdb 来调试 C 程序。后期还会再写一篇关于 gcc 的命令参数的文章，那就比较简单了。</p>
+<span id="more"></span>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>开始调试之前，必须用程序中的调试信息编译要调试的程序。这样，gdb 才能够调试所使用的变量、代码行和函数。即，使用 ‘-g’ 选项来编译程序：</p>
+<blockquote>
+<p>gcc -g main.c -o main</p>
+</blockquote>
+<h2 id="运行-gdb"><a href="#运行-gdb" class="headerlink" title="运行 gdb"></a>运行 gdb</h2><p>在 shell 中，可以使用 <code>gdb</code> 命令并指定程序名作为参数来运行 gdb，例如 <code>gdb main</code>；或者<strong>在 gdb 中</strong>，可以使用 <code>file</code> 命令来装入要调试的程序，例如 <code>file main</code>。<br>这两种方式都假设你是在包含程序的目录中执行命令。装入程序之后，可以用命令 <code>run</code> 来启动程序。</p>
+<h2 id="调试会话示例"><a href="#调试会话示例" class="headerlink" title="调试会话示例"></a>调试会话示例</h2><p>如果一切正常，程序将执行到结束，返回 gdb 程序。如果出现错误的话，gdb 会中断程序，从而可以让我们检查程序的状态。<br>示例如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">wib</span><span class="params">(<span class="type">int</span> no1, <span class="type">int</span> no2)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> result, diff;</span><br><span class="line">  diff = no1 - no2;</span><br><span class="line">  result = no1 / diff;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> value, div, result, i, total;</span><br><span class="line">  value = <span class="number">10</span>;</span><br><span class="line">  div = <span class="number">6</span>;</span><br><span class="line">  total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    result = wib(value, div);</span><br><span class="line">    total += result;</span><br><span class="line">    div++;</span><br><span class="line">    value--;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%d wibed by %d equals %d\n&quot;</span>, value, div, total);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序将进行 10 次 for 循环，使用 <strong>wib()</strong> 函数计算出累积值，最后打印出结果。下面我们就来试一试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim main.c </span><br><span class="line">gcc -g main.c -o main</span><br><span class="line">gdb main    /* 这条命令用来启动可执行文件 main */</span><br></pre></td></tr></table></figure>
+<p>这个时候，我们使用 <code>run</code> 命令运行程序会产生以下消息:<br><img src="https://i.loli.net/2020/12/20/QibMoPzRnDZm2XB.png" alt="gdb main"></p>
+<p>该消息指出在程序第 7 行发生一个算术异常，可以看到它打印了一行的代码以及 wib() 函数的自变量值。要查看第 7 行前后的其它代码，可以使用 <code>list</code> 命令，它会打印前 10 行代码，再次输入 <code>list</code>（或者按回车重复上一条命令）将列出程序的下 10 行。</p>
+<p>要查看变量的值，可以使用 <code>print</code> 命令并指定变量名。例如:<br><img src="https://i.loli.net/2019/06/26/5d132132c538479358.png" alt="图 2"></p>
+<p>可以看到变量 no1 等于 8，变量 diff 等于 0。根据这些值和第 7 行中的语句，我们可以推断出算术异常是由除数为 0 的运算造成的。<br>接下来，我们使用 <code>continue</code> 命令（或简写为 <strong>c</strong>）来让程序继续执行，直到结束。</p>
+<p><img src="https://i.loli.net/2019/06/26/5d1321430f88455084.png" alt="图 3"></p>
+<h2 id="使用断点"><a href="#使用断点" class="headerlink" title="使用断点"></a>使用断点</h2><p>为了查看在 <strong>main()</strong> 中发生了什么事情，我们可以在程序代码中的某一特定行或函数中设置断点，这样程序会在遇到断点时中断执行。可以使用命令 <code>break main</code> 在进入 <strong>main()</strong> 函数时设置断点，或者可以指定其它任何函数名来设置断点。然而，我们只希望在调用 <strong>wib()</strong> 函数之前中断执行。<code>list main</code> 命令将打印从 <strong>main()</strong> 函数开始的源码清单，再次按回车将显示第 20 行上的 <strong>wib()</strong> 函数调用。</p>
+<p>如下图所示：</p>
+<p><img src="https://i.loli.net/2020/12/20/9oy4vx3mjuwa68s.png" alt="list main"></p>
+<p>假如我们要在第 20 行上设置断点，只需输入 <code>break 21</code> 即可。</p>
+<p><img src="https://i.loli.net/2020/12/20/QqvHSTRGBaDIx7y.png" alt="break 20"></p>
+<p>设置完断点后，我们可以使用 <code>run</code> 命令来重新运行程序，直到 gdb 中断为止。</p>
+<p><img src="https://i.loli.net/2020/12/20/wYA7h65MZFjB8WG.png" alt="重新 run"></p>
+<p>我们可以使用 <code>info locals</code> 命令来显示程序第一次遇到断点时，各个变量的值。（当然，也可以使用 <code>pirnt 变量名</code> 的方式，稍微麻烦些）</p>
+<p><img src="https://i.loli.net/2020/12/20/P2rybh4JmodtTaO.png" alt="info locals"></p>
+<p>输入 <code>continue</code> 命令继续执行，直到程序下一次遇到断点。</p>
+<p><img src="https://i.loli.net/2020/12/20/OfTNZFDz3mtMelV.png" alt="vmplayer_1wX1oNPq1o.png"></p>
+<p>与其再次继续，还不如使用 <code>next </code>命令单步调试程序，以查看变量 <strong>value</strong> 和 <strong>div</strong> 是如何改变的。</p>
+<p>可以从下图中看到，<strong>div</strong> 自增，<strong>value</strong> 自减。</p>
+<p><img src="https://i.loli.net/2020/12/20/r5sIBKVZbR2qm7U.png" alt="next"></p>
+<p>继续 next，再次遇到断点时，我们使用 info locals 查看一下变量的值。</p>
+<p><img src="https://i.loli.net/2020/12/20/6C4MazeqgXtJpGZ.png" alt="继续 next"></p>
+<p>可以看到，此时 div 的值与 value 的值相等，继续执行，就可以看到 <strong>算术异常</strong> 的提示。</p>
+<p><img src="https://i.loli.net/2020/12/20/KwHXCBRmhlsQzIL.png" alt="算术异常"></p>
+<h2 id="断点和观察点"><a href="#断点和观察点" class="headerlink" title="断点和观察点"></a>断点和观察点</h2><h3 id="使用断点-1"><a href="#使用断点-1" class="headerlink" title="使用断点"></a>使用断点</h3><p>由于我们想要知道在调用 wib() 函数之前 value 什么时候等于 div，因此在上一示例中我们在第 20 行中设置断点。我们必须继续执行两次程序才会发生这种情况。</p>
+<p>事实上，只要在断点上设置一个条件就可以使 gdb 只在 value 与 div 相等时暂停，如下所示。</p>
+<p><img src="https://i.loli.net/2020/12/20/w6ViNqD5C7LoW1O.png" alt="condition"></p>
+<p>这里，<strong>condition</strong> 后面的数字 <strong>1</strong>，指的是 <strong>1 号断点</strong>。我们在执行完 break 20 后的输出提示中也能看到 1 号断点的相关信息。</p>
+<p>此外，这两条命令还可以合成一条写：<strong>break 20 if value&#x3D;&#x3D;div</strong>。</p>
+<p>使用 <strong>run</strong> 命令再次执行程序，直到中断为止，查看一下 value 是否等于 div。</p>
+<p><img src="https://i.loli.net/2020/12/20/DHcdqRCh4sSZ7ov.png" alt="run"></p>
+<p>要查看当前定义了哪些断点及其条件，可以用 <code>info break</code>命令。</p>
+<p>可以用 <code>disable 1</code>、<code>enable 1</code>、<code>delete 1</code> 来禁用、启用和删除断点。例如， <strong>disable 1</strong> 将禁用我们之前用 <strong>break 20</strong> 所设置的 1 号断点。</p>
+<p><img src="https://i.loli.net/2020/12/20/CDec4uthpoX1lyj.png" alt="info break"></p>
+<h3 id="使用观察点"><a href="#使用观察点" class="headerlink" title="使用观察点"></a>使用观察点</h3><p>如果我们对 <strong>value</strong> 什么时候变得与 div 相等更感兴趣，那么可以使用另一种断点，称作 <strong>监视</strong>。当指定表达式的值改变时，监视点将中断程序执行，但必须在表达式中所使用的变量在作用域中时设置监视点。要获取作用域中的 value 和 div，可以在 main 函数上设置断点，然后运行程序，当遇到 main() 断点时设置监视点。</p>
+<p><img src="https://i.loli.net/2020/12/20/BJZhyImTEYc1XW2.png" alt="重新调试"></p>
+<p>要了解 div 何时更改，可以使用 <code>watch div</code>，但由于要在 div 等于 value 时中断，所以还要设置一下条件。继续执行，当条件 <strong>div&#x3D;&#x3D;value</strong> 为真时，程序中断，此时我们再查看一下变量的值，可以看到两个变量的值确实是相等的。</p>
+<p><img src="https://i.loli.net/2020/12/20/gCjzKn9aEYAywXp.png" alt="watch"></p>
+<p>和之前一样，我们也可以用 <code>info watch</code> 命令来查看当前已经设置的观察点。其他的 enable、disable、delete 也都是类似的。</p>
+<p><img src="https://i.loli.net/2020/12/20/EpBc54DzLCOKymF.png" alt="info watch"></p>
+<h2 id="堆栈跟踪"><a href="#堆栈跟踪" class="headerlink" title="堆栈跟踪"></a>堆栈跟踪</h2><p>程序 <strong>调用堆栈</strong> 是当前函数之前的所有已调用函数的列表（包括当前函数）。每个函数及其变量都被分配了一个 <strong>帧</strong>，<strong>最近调用的函数在 0 号帧中</strong>（底部帧）。打印堆栈，可使用命令 <code>bt</code>（backtrace 的缩写）。</p>
+<p><img src="https://i.loli.net/2020/12/20/746tCaVX2WsxrPd.png" alt="bt"></p>
+<p>此结果显示了在 main() 的第 20 行中调用了函数 wib()（只要使用 <strong>list 20</strong> 就能证实这一点），而且 wib() 在 0 号帧中，main() 在 1 号帧中。由于 wib() 在 0 号帧中（最近调用的函数），那么它就是执行程序时发生算术错误的函数。</p>
+<p>实际上，发出 <strong>info locals</strong> 命令时，gdb 会打印出当前帧中的局部变量，缺省情况下，这个帧中的函数就是被中断的函数（0 号帧）。</p>
+<p><img src="https://i.loli.net/2020/12/20/k8YCWrSgaiUm9HR.png" alt="info locals in frame 0"></p>
+<p>可以使用命令 <code>frame</code> 打印当前帧。</p>
+<p>要查看 main 函数（在 1 号帧中）中的变量，可以发出 <strong>frame 1</strong> 切换到 1 号帧，然后使用 <strong>info locals</strong> 命令。</p>
+<p><img src="https://i.loli.net/2020/12/20/fNUQXGHI18jzBhw.png" alt="frame"></p>
+<p>在程序运行时，还可以使用 <code>set </code> 命令修改变量的值。在 gdb 下再次运行程序，使用命令 <strong>break 7 if diff&#x3D;&#x3D;0</strong> 在第 7 行（将在此处计算结果）设置条件断点，然后运行程序。当 gdb 中断执行时，可以将 <strong>diff</strong> 设置成非零值，使程序继续运行直至结束。</p>
+<p><img src="https://i.loli.net/2020/12/20/IytoqrbgJGwjW6d.png" alt="set"></p>
+<hr>
+<p>本文只介绍了很小一部分 gdb 的功能，还有待继续学习。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>支持我续费域名吧~</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Jiaqiang Wu WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jiaqiang Wu Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/gdb/" rel="tag"># gdb</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/16/Matlab%E4%B8%AD%E7%9A%84%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97/" rel="prev" title="Matlab中的矩阵运算">
+                  <i class="fa fa-chevron-left"></i> Matlab中的矩阵运算
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/20/%E5%A4%84%E7%90%86%E6%9C%BA%E4%B8%8ECPU/" rel="next" title="处理机与CPU">
+                  处理机与CPU <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiaqiang Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"jiaqiangwu","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
