@@ -51,7 +51,11 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
@@ -144,7 +148,62 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#stack"><span class="nav-number">1.</span> <span class="nav-text">stack</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#push"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">push()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">top()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pop"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">pop()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#empty"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">empty()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#size"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">size()</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#queue"><span class="nav-number">2.</span> <span class="nav-text">queue</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#push-1"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">push()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#front-%E3%80%81back"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">front()、back()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pop-1"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">pop()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#empty-1"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">empty()</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#stack"><span class="nav-number">1.</span> <span class="nav-text">stack</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#push"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">push()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">top()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pop"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">pop()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#empty"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">empty()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#size"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">size()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">代码示例:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+#include &lt;stdio.h&gt;
+#include &lt;stack&gt;
+using namespace std;
+int main(){
+    stack&lt;int&gt; st;      &#x2F;* stack 的定义 *&#x2F;
+    if(st.empty() &#x3D;&#x3D; true)
+        printf(&quot;Empty\n&quot;);
+    else
+        printf(&quot;Not Empty\n&quot;);
+    for(int i &#x3D; 0; i &lt;&#x3D; 5; ++i)
+        st.push(i);
+    for(int i &#x3D; 1; i &lt;&#x3D;3; ++i)    
+        st.pop();    &#x2F;* 连续三次将栈顶元素出栈 *&#x2F;
+    printf(&quot;%d\n&quot;, st.top());
+    if(st.empty() &#x3D;&#x3D; true)
+        printf(&quot;Empty\n&quot;);
+    else
+        printf(&quot;Not Empty\n&quot;);
+    printf(&quot;%d\n&quot;, st.size());
+    return 0;
+}
+
+输出结果: 
+Empty
+2
+Not Empty
+2
+</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#queue"><span class="nav-number">2.</span> <span class="nav-text">queue</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#push-1"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">push()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#front-%E3%80%81back"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">front()、back()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pop-1"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">pop()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#empty-1"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">empty()</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -295,10 +354,7 @@
 <h4 id="pop"><a href="#pop" class="headerlink" title="pop()"></a>pop()</h4><p>pop() 用以弹出栈顶元素，时间复杂度为 O(1)</p>
 <h4 id="empty"><a href="#empty" class="headerlink" title="empty()"></a>empty()</h4><p>empty() 可以检测 <strong>stack</strong> 内是否为空，返回 true 为空，返回 false 为非空，时间复杂度为 O(1)</p>
 <h4 id="size"><a href="#size" class="headerlink" title="size()"></a>size()</h4><p>size() 返回 <strong>stack</strong> 内元素的个数，时间复杂度为 O(1)</p>
-<p>代码示例:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stack&gt;</span></span></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>&lt;<span class="type">int</span>&gt; st;      <span class="comment">/* stack 的定义 */</span></span><br><span class="line">    <span class="keyword">if</span>(st.empty() == <span class="literal">true</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Empty\n&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not Empty\n&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">5</span>; ++i)</span><br><span class="line">        st.push(i);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;=<span class="number">3</span>; ++i)    </span><br><span class="line">        st.pop();    <span class="comment">/* 连续三次将栈顶元素出栈 */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, st.top());</span><br><span class="line">    <span class="keyword">if</span>(st.empty() == <span class="literal">true</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Empty\n&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not Empty\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, st.size());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果: </span><br><span class="line">Empty</span><br><span class="line"><span class="number">2</span></span><br><span class="line">Not Empty</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h1 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h1><p>队列，在 STL 中实现了一个先进先出的容器。</p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例:"></a>代码示例:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stack&gt;</span></span></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>&lt;<span class="type">int</span>&gt; st;      <span class="comment">/* stack 的定义 */</span></span><br><span class="line">    <span class="keyword">if</span>(st.empty() == <span class="literal">true</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Empty\n&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not Empty\n&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">5</span>; ++i)</span><br><span class="line">        st.push(i);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;=<span class="number">3</span>; ++i)    </span><br><span class="line">        st.pop();    <span class="comment">/* 连续三次将栈顶元素出栈 */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, st.top());</span><br><span class="line">    <span class="keyword">if</span>(st.empty() == <span class="literal">true</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Empty\n&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not Empty\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, st.size());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果: </span><br><span class="line">Empty</span><br><span class="line"><span class="number">2</span></span><br><span class="line">Not Empty</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure></h2><h1 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h1><p>队列，在 STL 中实现了一个先进先出的容器。</p>
 <h4 id="push-1"><a href="#push-1" class="headerlink" title="push()"></a>push()</h4><p>push(x) 将 x 进行入队，时间复杂度为 O(1)</p>
 <h4 id="front-、back"><a href="#front-、back" class="headerlink" title="front()、back()"></a>front()、back()</h4><p>front() 和 back() 可以分别获得队首元素和队尾元素，时间复杂度为 O(1)</p>
 <h4 id="pop-1"><a href="#pop-1" class="headerlink" title="pop()"></a>pop()</h4><p>pop() 令队首元素出队，时间复杂度为 O(1)</p>
