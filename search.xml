@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>Markdown表格语法</title>
+      <link href="/2023/03/25/Markdown%E8%A1%A8%E6%A0%BC%E8%AF%AD%E6%B3%95/"/>
+      <url>/2023/03/25/Markdown%E8%A1%A8%E6%A0%BC%E8%AF%AD%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<p>在 Markdown 中编写表格。</p><span id="more"></span><table>    <tr>        <td colspan="4" align="center"><b>Timetable</b></td>    </tr>    <tr>    <td rowspan="5">Thursday</td>    <td rowspan="4">Morning</td>    <td>8:30 ~ 9:00</td>    <td>names</td>    </tr>    <tr>        <td>9:10 ~ 9:40</td>        <td>names</td>    </tr>    <tr>        <td>9:50 ~ 10:20</td>        <td>names</td>    </tr>    <tr>        <td>10:30 ~ 11:00</td>        <td>names</td>    </tr>    <tr>        <td>Afternoon</td>        <td>14:30 ~ 15:00</td>        <td>names</td>    </tr>    <tr>        <td rowspan="4">Friday</td>        <td rowspan="4">Morning</td>        <td>8:30 ~ 9:00</td>        <td>names</td>    </tr>    <tr>        <td>9:05 ~ 9:45</td>        <td>names</td>    </tr>    <tr>        <td>9:50 ~ 10:30</td>        <td>names</td>    </tr>    <tr>        <td>10:35 ~ 11:05</td>        <td>names</td>    </tr></table>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>PCA 降维</title>
       <link href="/2023/03/14/PCA-%E9%99%8D%E7%BB%B4/"/>
       <url>/2023/03/14/PCA-%E9%99%8D%E7%BB%B4/</url>
